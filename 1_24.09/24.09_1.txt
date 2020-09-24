@@ -101,3 +101,24 @@ mysql> SELECT * FROM aruanded ORDER BY tootajad_id  asc;
 |           8 | 2020-09-13 |            4 |            4 |           6 |
 +-------------+------------+--------------+--------------+-------------+
 10 rows in set (0.00 sec)
+
+mysql> describe tööliigid;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| tooliigid_id | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Tööliigid    | varchar(70) | NO   |     | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+2 rows in set (0.01 sec)
+
+mysql> describe töötajad;
++---------------+-------------+------+-----+---------+----------------+
+| Field         | Type        | Null | Key | Default | Extra          |
++---------------+-------------+------+-----+---------+----------------+
+| tootajad_id   | int(11)     | NO   | PRI | NULL    | auto_increment |
+| Eesnimi       | varchar(40) | NO   |     | NULL    |                |
+| Perekonnanimi | varchar(40) | NO   |     | NULL    |                |
+| Isikukood     | varchar(11) | NO   |     | NULL    |                |
++---------------+-------------+------+-----+---------+----------------+
+4 rows in set (0.00 sec)
+
