@@ -1,0 +1,304 @@
+Sisesta tabelisse kõigi oma rühma õpilaste andmed
+
+mysql> CREATE TABLE OPILASED( Opilased_id mediumint unsigned not null auto_increment, Eesnimi varchar(20) not null, Perekonnanimi varchar(20) not null, Linn varchar(50) not null, PRIMARY KEY(Opilased_id) );
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> INSERT INTO OPILASED(Eesnimi, Perekonnanimi, Aadress, Linn) VALUES('Hanna-Marii','Kriisa','Tartu');ERROR 1136 (21S01): Column count doesn't match value count at row 1
+mysql> INSERT INTO OPILASED(Eesnimi, Perekonnanimi, Linn) VALUES('Hanna-Marii','Kriisa','Tartu');
+Query OK, 1 row affected (0.00 sec)
+
+sorteeri andmed kahanevas järjekorras perekonnanime järgi
+
+mysql> SELECT * FROM OPILASED ORDER BY Perekonnanimi desc;
++-------------+-------------+---------------+---------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++-------------+-------------+---------------+---------+-------+
+|           8 | Anna-Liisa  | Saks          |    NULL | Tartu |
+|          13 | Mario       | Planknen      |    NULL | Tartu |
+|          10 | Taivo       | Nurk          |    NULL | Tartu |
+|          12 | Timmo       | Mustonen      |    NULL | Tartu |
+|          16 | Kirill      | Maftuljak     |    NULL | Tartu |
+|          14 | Kristi      | Maask         |    NULL | Võru  |
+|           7 | Karl Johan  | Linnas        |    NULL | Tartu |
+|           1 | Hanna-Marii | Kriisa        |    NULL | Tartu |
+|          11 | Chris       | Kottise       |    NULL | Tartu |
+|           4 | Karl-August | Kongo         |    NULL | Tartu |
+|           2 | Henry       | Järv          |    NULL | Tartu |
+|           6 | Fred        | Jõks          |    NULL | Tartu |
+|           3 | Jaagop      | Janson        |    NULL | Tartu |
+|          15 | Oliver      | Helm          |    NULL | Tartu |
+|           9 | German      | Eksi          |    NULL | Tartu |
+|           5 | Andero      | Avastu        |    NULL | Tartu |
++-------------+-------------+---------------+---------+-------+
+16 rows in set (0.00 sec)
+
+sorteeri andmed kasvavas järjekorras linna järgi
+
+mysql> SELECT * FROM OPILASED ORDER BY Linn asc;
++-------------+-------------+---------------+---------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++-------------+-------------+---------------+---------+-------+
+|           1 | Hanna-Marii | Kriisa        |    NULL | Tartu |
+|          15 | Oliver      | Helm          |    NULL | Tartu |
+|          13 | Mario       | Planknen      |    NULL | Tartu |
+|          12 | Timmo       | Mustonen      |    NULL | Tartu |
+|          11 | Chris       | Kottise       |    NULL | Tartu |
+|          10 | Taivo       | Nurk          |    NULL | Tartu |
+|           9 | German      | Eksi          |    NULL | Tartu |
+|           8 | Anna-Liisa  | Saks          |    NULL | Tartu |
+|           7 | Karl Johan  | Linnas        |    NULL | Tartu |
+|           6 | Fred        | Jõks          |    NULL | Tartu |
+|           5 | Andero      | Avastu        |    NULL | Tartu |
+|           4 | Karl-August | Kongo         |    NULL | Tartu |
+|           3 | Jaagop      | Janson        |    NULL | Tartu |
+|           2 | Henry       | Järv          |    NULL | Tartu |
+|          16 | Kirill      | Maftuljak     |    NULL | Tartu |
+|          14 | Kristi      | Maask         |    NULL | Võru  |
++-------------+-------------+---------------+---------+-------+
+16 rows in set (0.00 sec)
+
+väljasta kõikide kasutajate andmed kes elavad Tartus 
+
+mysql> select * from OPILASED where Linn='Tartu';
++-------------+-------------+---------------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Linn  |
++-------------+-------------+---------------+-------+
+|           1 | Hanna-Marii | Kriisa        | Tartu |
+|           2 | Henry       | Järv          | Tartu |
+|           3 | Jaagop      | Janson        | Tartu |
+|           4 | Karl-August | Kongo         | Tartu |
+|           5 | Andero      | Avastu        | Tartu |
+|           6 | Fred        | Jõks          | Tartu |
+|           7 | Karl Johan  | Linnas        | Tartu |
+|           8 | Anna-Liisa  | Saks          | Tartu |
+|           9 | German      | Eksi          | Tartu |
+|          10 | Taivo       | Nurk          | Tartu |
+|          11 | Chris       | Kottise       | Tartu |
+|          12 | Timmo       | Mustonen      | Tartu |
+|          13 | Mario       | Planknen      | Tartu |
+|          15 | Oliver      | Helm          | Tartu |
+|          16 | Kirill      | Maftuljak     | Tartu |
++-------------+-------------+---------------+-------+
+15 rows in set (0.00 sec)
+
+
+väljasta kasutaja andmed kelle id=3
+
+mysql> select * from OPILASED where opilased_id=3;
++-------------+---------+---------------+-------+
+| Opilased_id | Eesnimi | Perekonnanimi | Linn  |
++-------------+---------+---------------+-------+
+|           3 | Jaagop  | Janson        | Tartu |
++-------------+---------+---------------+-------+
+1 row in set (0.00 sec)
+
+ Lisa kasutajate tabelisse veerg vanused ja sisesta andmed
+
+mysql> ALTER TABLE OPILASED ADD Vanused int after Perekonnanimi;
+Query OK, 16 rows affected (0.00 sec)
+Records: 16  Duplicates: 0  Warnings: 0
+
+mysql> SELECT * FROM OPILASED;
++-------------+-------------+---------------+---------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++-------------+-------------+---------------+---------+-------+
+|           1 | Hanna-Marii | Kriisa        |    NULL | Tartu |
+|           2 | Henry       | Järv          |    NULL | Tartu |
+|           3 | Jaagop      | Janson        |    NULL | Tartu |
+|           4 | Karl-August | Kongo         |    NULL | Tartu |
+|           5 | Andero      | Avastu        |    NULL | Tartu |
+|           6 | Fred        | Jõks          |    NULL | Tartu |
+|           7 | Karl Johan  | Linnas        |    NULL | Tartu |
+|           8 | Anna-Liisa  | Saks          |    NULL | Tartu |
+|           9 | German      | Eksi          |    NULL | Tartu |
+|          10 | Taivo       | Nurk          |    NULL | Tartu |
+|          11 | Chris       | Kottise       |    NULL | Tartu |
+|          12 | Timmo       | Mustonen      |    NULL | Tartu |
+|          13 | Mario       | Planknen      |    NULL | Tartu |
+|          14 | Kristi      | Maask         |    NULL | Võru  |
+|          15 | Oliver      | Helm          |    NULL | Tartu |
+|          16 | Kirill      | Maftuljak     |    NULL | Tartu |
++-------------+-------------+---------------+---------+-------+
+16 rows in set (0.00 sec)
+
+mysql> UPDATE OPILASED SET Vanused = 19 WHERE opilased_id=2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+nende kasutajate andmed kes elavad Tartus või Võrus 
+
+mysql> SELECT * FROM OPILASED WHERE Linn='Tartu' OR Linn='Võru';
++-------------+-------------+---------------+---------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++-------------+-------------+---------------+---------+-------+
+|           1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|           2 | Henry       | Järv          |      19 | Tartu |
+|           3 | Jaagop      | Janson        |      24 | Tartu |
+|           4 | Karl-August | Kongo         |      20 | Tartu |
+|           5 | Andero      | Avastu        |      25 | Tartu |
+|           6 | Fred        | Jõks          |      24 | Tartu |
+|           7 | Karl Johan  | Linnas        |      23 | Tartu |
+|           8 | Anna-Liisa  | Saks          |      24 | Tartu |
+|           9 | German      | Eksi          |      19 | Tartu |
+|          10 | Taivo       | Nurk          |      29 | Tartu |
+|          11 | Chris       | Kottise       |      22 | Tartu |
+|          12 | Timmo       | Mustonen      |      21 | Tartu |
+|          13 | Mario       | Planknen      |      21 | Tartu |
+|          14 | Kristi      | Maask         |      21 | Võru  |
+|          15 | Oliver      | Helm          |      23 | Tartu |
+|          16 | Kirill      | Maftuljak     |      28 | Tartu |
++-------------+-------------+---------------+---------+-------+
+16 rows in set (0.00 sec)
+
+nende kasutajate andmed kes elavad Tartus ja Võrus
+
+mysql> SELECT * FROM OPILASED WHERE Linn='Tartu' AND Linn='Võru';
+Empty set (0.00 sec)
+
+need kasutajad kelle ID jääb vahemikku 1-5
+
+mysql> SELECT * FROM OPILASED WHERE Opilased_id  BETWEEN 1 AND 5;
++-------------+-------------+---------------+---------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++-------------+-------------+---------------+---------+-------+
+|           1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|           2 | Henry       | Järv          |      19 | Tartu |
+|           3 | Jaagop      | Janson        |      24 | Tartu |
+|           4 | Karl-August | Kongo         |      20 | Tartu |
+|           5 | Andero      | Avastu        |      25 | Tartu |
++-------------+-------------+---------------+---------+-------+
+5 rows in set (0.00 sec)
+
+ need kasutajad kelle eesnime esimene täht on vahemikus A-L . Millist lahendust kasutasid tulemuse saamiseks? 
+
+mysql> SELECT * FROM OPILASED WHERE Eesnimi  BETWEEN 'A' AND 'L';
++-------------+-------------+---------------+---------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++-------------+-------------+---------------+---------+-------+
+|           1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|           2 | Henry       | Järv          |      19 | Tartu |
+|           3 | Jaagop      | Janson        |      24 | Tartu |
+|           4 | Karl-August | Kongo         |      20 | Tartu |
+|           5 | Andero      | Avastu        |      25 | Tartu |
+|           6 | Fred        | Jõks          |      24 | Tartu |
+|           7 | Karl Johan  | Linnas        |      23 | Tartu |
+|           8 | Anna-Liisa  | Saks          |      24 | Tartu |
+|           9 | German      | Eksi          |      19 | Tartu |
+|          11 | Chris       | Kottise       |      22 | Tartu |
+|          14 | Kristi      | Maask         |      21 | Võru  |
+|          16 | Kirill      | Maftuljak     |      28 | Tartu |
++-------------+-------------+---------------+---------+-------+
+12 rows in set (0.00 sec)
+
+kasutajad kelle vanus jääb vahemikku 20-25. Millist lahendust kasutasid tulemuse saamiseks?
+
+mysql> SELECT * FROM OPILASED WHERE Vanused  BETWEEN 20 AND 25;
++-------------+-------------+---------------+---------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++-------------+-------------+---------------+---------+-------+
+|           1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|           3 | Jaagop      | Janson        |      24 | Tartu |
+|           4 | Karl-August | Kongo         |      20 | Tartu |
+|           5 | Andero      | Avastu        |      25 | Tartu |
+|           6 | Fred        | Jõks          |      24 | Tartu |
+|           7 | Karl Johan  | Linnas        |      23 | Tartu |
+|           8 | Anna-Liisa  | Saks          |      24 | Tartu |
+|          11 | Chris       | Kottise       |      22 | Tartu |
+|          12 | Timmo       | Mustonen      |      21 | Tartu |
+|          13 | Mario       | Planknen      |      21 | Tartu |
+|          14 | Kristi      | Maask         |      21 | Võru  |
+|          15 | Oliver      | Helm          |      23 | Tartu |
++-------------+-------------+---------------+---------+-------+
+12 rows in set (0.00 sec)
+
+veerg aadress ja linn ühe veeruna, alias elukoht
+
+mysql> select concat(Eesnimi,' ', Perekonnanimi) AS Nimi from OPILASED;
++--------------------+
+| Nimi               |
++--------------------+
+| Hanna-Marii Kriisa |
+| Henry Järv         |
+| Jaagop Janson      |
+| Karl-August Kongo  |
+| Andero Avastu      |
+| Fred Jõks          |
+| Karl Johan Linnas  |
+| Anna-Liisa Saks    |
+| German Eksi        |
+| Taivo Nurk         |
+| Chris Kottise      |
+| Timmo Mustonen     |
+| Mario Planknen     |
+| Kristi Maask       |
+| Oliver Helm        |
+| Kirill Maftuljak   |
++--------------------+
+16 rows in set (0.00 sec)
+
+need kasutajad kes elavad linnas, mille viimane täht ‘u’
+
+mysql> SELECT * FROM OPILASED WHERE Linn like '%u';
++-------------+-------------+---------------+---------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++-------------+-------------+---------------+---------+-------+
+|           1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|           2 | Henry       | Järv          |      19 | Tartu |
+|           3 | Jaagop      | Janson        |      24 | Tartu |
+|           4 | Karl-August | Kongo         |      20 | Tartu |
+|           5 | Andero      | Avastu        |      25 | Tartu |
+|           6 | Fred        | Jõks          |      24 | Tartu |
+|           7 | Karl Johan  | Linnas        |      23 | Tartu |
+|           8 | Anna-Liisa  | Saks          |      24 | Tartu |
+|           9 | German      | Eksi          |      19 | Tartu |
+|          10 | Taivo       | Nurk          |      29 | Tartu |
+|          11 | Chris       | Kottise       |      22 | Tartu |
+|          12 | Timmo       | Mustonen      |      21 | Tartu |
+|          13 | Mario       | Planknen      |      21 | Tartu |
+|          14 | Kristi      | Maask         |      21 | Võru  |
+|          15 | Oliver      | Helm          |      23 | Tartu |
+|          16 | Kirill      | Maftuljak     |      28 | Tartu |
++-------------+-------------+---------------+---------+-------+
+16 rows in set (0.00 sec)
+
+ kasutajad kelle perekonnanimi algab ‘m’ tähega
+
+mysql> SELECT * FROM OPILASED WHERE Perekonnanimi like 'M%';
++-------------+---------+---------------+---------+-------+
+| Opilased_id | Eesnimi | Perekonnanimi | Vanused | Linn  |
++-------------+---------+---------------+---------+-------+
+|          12 | Timmo   | Mustonen      |      21 | Tartu |
+|          14 | Kristi  | Maask         |      21 | Võru  |
+|          16 | Kirill  | Maftuljak     |      28 | Tartu |
++-------------+---------+---------------+---------+-------+
+3 rows in set (0.00 sec)
+
+leia kasutajate keskmine vanus 
+
+mysql> SELECT AVG(Vanused) FROM OPILASED;
++--------------+
+| AVG(Vanused) |
++--------------+
+|      22.8125 |
++--------------+
+1 row in set (0.00 sec)
+
+leia kõige noorem kasutaja
+
+mysql> SELECT MIN(Vanused) FROM OPILASED;
++--------------+
+| MIN(Vanused) |
++--------------+
+|           19 |
++--------------+
+1 row in set (0.00 sec)
+
+leia kõige vanem kasutaja
+
+mysql> SELECT MAX(Vanused) FROM OPILASED;
++--------------+
+| MAX(Vanused) |
++--------------+
+|           29 |
++--------------+
+1 row in set (0.00 sec)
