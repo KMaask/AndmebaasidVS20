@@ -1,0 +1,339 @@
+Millised andmebaasid oled loonud andmebaaside programeerimise aines (käsk + väljund)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| kristima_ab20      |
+| kristima_toohoive  |
++--------------------+
+3 rows in set (0.03 sec)
+
+
+Kasutajate tabeli väljavõte (käsk + väljund) 
+
+mysql> select * from Kasutajad;
++--------------+-------------+---------------+---------+-------+
+| Kasutajad_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++--------------+-------------+---------------+---------+-------+
+|            1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|            2 | Henry       | Järv          |      19 | Tartu |
+|            3 | Jaagop      | Janson        |      24 | Tartu |
+|            4 | Karl-August | Kongo         |      20 | Tartu |
+|            5 | Andero      | Avastu        |      25 | Tartu |
+|            6 | Fred        | Jõks          |      24 | Tartu |
+|            7 | Karl Johan  | Linnas        |      23 | Tartu |
+|            8 | Anna-Liisa  | Saks          |      24 | Tartu |
+|            9 | German      | Eksi          |      19 | Tartu |
+|           10 | Taivo       | Nurk          |      29 | Tartu |
+|           11 | Chris       | Kottise       |      22 | Tartu |
+|           12 | Timmo       | Mustonen      |      21 | Tartu |
+|           13 | Mario       | Planknen      |      21 | Tartu |
+|           14 | Kristi      | Maask         |      21 | Võru  |
+|           15 | Oliver      | Helm          |      23 | Tartu |
+|           16 | Kirill      | Maftuljak     |      28 | Tartu |
++--------------+-------------+---------------+---------+-------+
+16 rows in set (0.00 sec)
+
+Sorteeri kasutajad eesnime järgi kasvavas järjekorras, väljasta eesnime ja perekonna nime veerg (käsk + väljund)
+
+mysql> select Eesnimi, Perekonnanimi from Kasutajad order by Eesnimi asc;
++-------------+---------------+
+| Eesnimi     | Perekonnanimi |
++-------------+---------------+
+| Andero      | Avastu        |
+| Anna-Liisa  | Saks          |
+| Chris       | Kottise       |
+| Fred        | Jõks          |
+| German      | Eksi          |
+| Hanna-Marii | Kriisa        |
+| Henry       | Järv          |
+| Jaagop      | Janson        |
+| Karl Johan  | Linnas        |
+| Karl-August | Kongo         |
+| Kirill      | Maftuljak     |
+| Kristi      | Maask         |
+| Mario       | Planknen      |
+| Oliver      | Helm          |
+| Taivo       | Nurk          |
+| Timmo       | Mustonen      |
++-------------+---------------+
+16 rows in set (0.00 sec)
+
+Leia kasutajad kelle perekonna nimi algab “M” või “K” tähega (käsk + väljund)
+
+mysql>  SELECT * FROM Kasutajad WHERE Perekonnanimi like 'M%' or Perekonnanimi like 'K%';
++-------------+-------------+---------------+---------+-------+
+| Opilased_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++-------------+-------------+---------------+---------+-------+
+|           1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|           4 | Karl-August | Kongo         |      20 | Tartu |
+|          11 | Chris       | Kottise       |      22 | Tartu |
+|          12 | Timmo       | Mustonen      |      21 | Tartu |
+|          14 | Kristi      | Maask         |      21 | Võru  |
+|          16 | Kirill      | Maftuljak     |      28 | Tartu |
++-------------+-------------+---------------+---------+-------+
+6 rows in set (0.00 sec)
+
+Väljasta kasutajad kelle ID jääb vahemikku 4-6 ja 18-21 (käsk + väljund)
+
+mysql>  SELECT * FROM Kasutajad WHERE (Kasutajad_id between 4 and 6) or (Kasutajad_id between 18 and 21);
++--------------+-------------+---------------+---------+-------+
+| Kasutajad_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++--------------+-------------+---------------+---------+-------+
+|            4 | Karl-August | Kongo         |      20 | Tartu |
+|            5 | Andero      | Avastu        |      25 | Tartu |
+|            6 | Fred        | Jõks          |      24 | Tartu |
++--------------+-------------+---------------+---------+-------+
+3 rows in set (0.00 sec)
+
+
+muuda vabalt valitud kasutaja andmeid (aadress ja linn), väljasta muudetud kasutaja kõik andmed (käsk + väljund)
+
+mysql> update Kasutajad set Linn = 'Võru' where Kasutajad_id = 5;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Kasutajad where Kasutajad_id = 5;
++--------------+---------+---------------+---------+-------+
+| Kasutajad_id | Eesnimi | Perekonnanimi | Vanused | Linn  |
++--------------+---------+---------------+---------+-------+
+|            5 | Andero  | Avastu        |      25 | Võru  |
++--------------+---------+---------------+---------+-------+
+1 row in set (0.00 sec)
+
+
+väljasta kasutajad kelle vanus on 18 - 24 (käsk+väljund)
+
+mysql> select * from Kasutajad where Vanused between 18 and 24;
++--------------+-------------+---------------+---------+-------+
+| Kasutajad_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++--------------+-------------+---------------+---------+-------+
+|            1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|            2 | Henry       | Järv          |      19 | Tartu |
+|            3 | Jaagop      | Janson        |      24 | Tartu |
+|            4 | Karl-August | Kongo         |      20 | Tartu |
+|            6 | Fred        | Jõks          |      24 | Tartu |
+|            7 | Karl Johan  | Linnas        |      23 | Tartu |
+|            8 | Anna-Liisa  | Saks          |      24 | Tartu |
+|            9 | German      | Eksi          |      19 | Tartu |
+|           11 | Chris       | Kottise       |      22 | Tartu |
+|           12 | Timmo       | Mustonen      |      21 | Tartu |
+|           13 | Mario       | Planknen      |      21 | Tartu |
+|           14 | Kristi      | Maask         |      21 | Võru  |
+|           15 | Oliver      | Helm          |      23 | Tartu |
++--------------+-------------+---------------+---------+-------+
+13 rows in set (0.00 sec)
+
+väljasta kasutajad kes elavad Tartus või Valgas (käsk+ väljund)
+
+mysql> SELECT * FROM Kasutajad WHERE Linn='Tartu' OR Linn='Valga';
++--------------+-------------+---------------+---------+-------+
+| Kasutajad_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++--------------+-------------+---------------+---------+-------+
+|            1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|            2 | Henry       | Järv          |      19 | Tartu |
+|            3 | Jaagop      | Janson        |      24 | Tartu |
+|            4 | Karl-August | Kongo         |      20 | Tartu |
+|            6 | Fred        | Jõks          |      24 | Tartu |
+|            7 | Karl Johan  | Linnas        |      23 | Valga |
+|            8 | Anna-Liisa  | Saks          |      24 | Tartu |
+|            9 | German      | Eksi          |      19 | Tartu |
+|           10 | Taivo       | Nurk          |      29 | Tartu |
+|           11 | Chris       | Kottise       |      22 | Tartu |
+|           12 | Timmo       | Mustonen      |      21 | Tartu |
+|           13 | Mario       | Planknen      |      21 | Tartu |
+|           15 | Oliver      | Helm          |      23 | Tartu |
+|           16 | Kirill      | Maftuljak     |      28 | Tartu |
++--------------+-------------+---------------+---------+-------+
+14 rows in set (0.00 sec)
+
+
+Väljasta kasutajad kes elavad Tartus ja Valgas (käsk + väljund) 
+
+mysql> SELECT * FROM Kasutajad WHERE Linn='Tartu' AND Linn='Valga';
+Empty set (0.01 sec)
+
+Pole kasutajaid, kes elavad nii Tartus kui ka Valgas.
+
+Väljastage kasutajte eesnimi ja perekonna nimi ühes veerus, kasutage aliast uueks veeru nimeks “nimi” (käsk + väljund)
+
+mysql> select concat(Eesnimi,' ', Perekonnanimi) AS nimi from Kasutajad;
++--------------------+
+| nimi               |
++--------------------+
+| Hanna-Marii Kriisa |
+| Henry Järv         |
+| Jaagop Janson      |
+| Karl-August Kongo  |
+| Andero Avastu      |
+| Fred Jõks          |
+| Karl Johan Linnas  |
+| Anna-Liisa Saks    |
+| German Eksi        |
+| Taivo Nurk         |
+| Chris Kottise      |
+| Timmo Mustonen     |
+| Mario Planknen     |
+| Kristi Maask       |
+| Oliver Helm        |
+| Kirill Maftuljak   |
++--------------------+
+16 rows in set (0.00 sec)
+
+väljastage kasutajad kelle eesnimes on täht “s” ja perekonna nimes täht “a” (käsk + väljund)
+
+mysql>  SELECT * FROM Kasutajad WHERE Eesnimi like '%s%' and Perekonnanimi like '%a%';
++--------------+------------+---------------+---------+-------+
+| Kasutajad_id | Eesnimi    | Perekonnanimi | Vanused | Linn  |
++--------------+------------+---------------+---------+-------+
+|            8 | Anna-Liisa | Saks          |      24 | Tartu |
+|           14 | Kristi     | Maask         |      21 | Võru  |
++--------------+------------+---------------+---------+-------+
+2 rows in set (0.00 sec)
+
+väljastage kõik kasutajad kes elavad linnas mille viimane täht on “U” (käsk + väljund)
+
+mysql> SELECT * FROM Kasutajad WHERE Linn like '%u';
++--------------+-------------+---------------+---------+-------+
+| Kasutajad_id | Eesnimi     | Perekonnanimi | Vanused | Linn  |
++--------------+-------------+---------------+---------+-------+
+|            1 | Hanna-Marii | Kriisa        |      22 | Tartu |
+|            2 | Henry       | Järv          |      19 | Tartu |
+|            3 | Jaagop      | Janson        |      24 | Tartu |
+|            4 | Karl-August | Kongo         |      20 | Tartu |
+|            5 | Andero      | Avastu        |      25 | Võru  |
+|            6 | Fred        | Jõks          |      24 | Tartu |
+|            8 | Anna-Liisa  | Saks          |      24 | Tartu |
+|            9 | German      | Eksi          |      19 | Tartu |
+|           10 | Taivo       | Nurk          |      29 | Tartu |
+|           11 | Chris       | Kottise       |      22 | Tartu |
+|           12 | Timmo       | Mustonen      |      21 | Tartu |
+|           13 | Mario       | Planknen      |      21 | Tartu |
+|           14 | Kristi      | Maask         |      21 | Võru  |
+|           15 | Oliver      | Helm          |      23 | Tartu |
+|           16 | Kirill      | Maftuljak     |      28 | Tartu |
++--------------+-------------+---------------+---------+-------+
+15 rows in set (0.00 sec)
+
+
+leidke kasutajate keskmine vanus (käsk + väljund) - leidke kõige noorem kasutaja (käsk + väljund)
+
+mysql> SELECT AVG(Vanused) FROM Kasutajad;
++--------------+
+| AVG(Vanused) |
++--------------+
+|      22.8125 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> SELECT MIN(Vanused) FROM Kasutajad;
++--------------+
+| MIN(Vanused) |
++--------------+
+|           19 |
++--------------+
+1 row in set (0.00 sec)
+
+leidke kõige vanem kasutaja (käsk + väljund)
+
+mysql> SELECT MAX(Vanused) FROM Kasutajad;
++--------------+
+| MAX(Vanused) |
++--------------+
+|           29 |
++--------------+
+1 row in set (0.00 sec)
+
+leidke kasutajad kelle eesnimi on 5 täheline (käsk + väljund)
+
+mysql> select * from Kasutajad where Eesnimi like '_____';
++--------------+---------+---------------+---------+-------+
+| Kasutajad_id | Eesnimi | Perekonnanimi | Vanused | Linn  |
++--------------+---------+---------------+---------+-------+
+|            2 | Henry   | Järv          |      19 | Tartu |
+|           10 | Taivo   | Nurk          |      29 | Tartu |
+|           11 | Chris   | Kottise       |      22 | Tartu |
+|           12 | Timmo   | Mustonen      |      21 | Tartu |
+|           13 | Mario   | Planknen      |      21 | Tartu |
++--------------+---------+---------------+---------+-------+
+5 rows in set (0.00 sec)
+
+väljasta aadressi veerust kaks tähte alates teisest tähest (käsk + väljund)
+
+mysql> select substring(Linn,2,2) AS Aadress from Kasutajad;
++---------+
+| Aadress |
++---------+
+| ar      |
+| ar      |
+| ar      |
+| ar      |
+| õr      |
+| ar      |
+| al      |
+| ar      |
+| ar      |
+| ar      |
+| ar      |
+| ar      |
+| ar      |
+| õr      |
+| ar      |
+| ar      |
++---------+
+16 rows in set (0.01 sec)
+
+Millised kaks tabelit oleks võimalik lisaks kasutajate tabelile luua andmebaasi: 
+
+- Loo tabelid ja sisesta andmed. 
+
+- Väljavõte iga tabeli kohta (käsk + väljund)
+
+mysql> select * from Liiklusvahendid;
++--------------------+--------------------------+-----------------+--------------+
+| Liiklusvahendid_id | Igapaevane_liiklusvahend | Harva_kasutatav | Kasutajad_id |
++--------------------+--------------------------+-----------------+--------------+
+|                  1 | Buss                     | Jalgratas       |            1 |
+|                  2 | Jalgratas                | Auto            |            2 |
+|                  3 | Auto                     | Jalgratas       |            3 |
+|                  4 | Buss                     | Roller          |            4 |
+|                  5 | Auto                     | Jalgratas       |            5 |
+|                  6 | Auto                     | Buss            |            6 |
+|                  7 | Jalgratas                | Auto            |            7 |
+|                  8 | Jalgratas                | Auto            |            8 |
+|                  9 | Buss                     | Auto            |            9 |
+|                 10 | Auto                     | Jalgratas       |           10 |
+|                 11 | Auto                     | Jalgratas       |           11 |
+|                 12 | Buss                     | Auto            |           12 |
+|                 13 | Buss                     | Auto            |           13 |
+|                 14 | Auto                     | Buss            |           14 |
+|                 15 | Buss                     | Auto            |           15 |
+|                 16 | Auto                     | Buss            |           16 |
++--------------------+--------------------------+-----------------+--------------+
+16 rows in set (0.00 sec)
+
+mysql> select * from Marsruudid;
++---------------+----------------+--------------------+
+| Marsruudid_id | pikem_marsruut | Liiklusvahendid_id |
++---------------+----------------+--------------------+
+|             1 | Tartu-Tallinn  |                  1 |
+|             2 | Tartu-Valga    |                  2 |
+|             3 | Tartu-Võru     |                  3 |
+|             4 | Tartu-Põlva    |                  4 |
+|             5 | Tartu-Viljandi |                  5 |
+|             6 | Tartu-Kanepi   |                  6 |
+|             7 | Valga-Tartu    |                  7 |
+|             8 | Tartu-Viljandi |                  8 |
+|             9 | Tartu-Võru     |                  9 |
+|            10 | Tartu-Tallinn  |                 10 |
+|            11 | Tartu-Elva     |                 11 |
+|            12 | Tartu-Viljandi |                 12 |
+|            13 | Tartu-Jõgeva   |                 13 |
+|            14 | Tartu-Põlva    |                 14 |
+|            15 | Tartu-Võru     |                 15 |
+|            16 | Tartu-Viljandi |                 16 |
++---------------+----------------+--------------------+
+16 rows in set (0.00 sec)
+
