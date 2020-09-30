@@ -1,0 +1,283 @@
+Järjesta kassid kaalu järgi kahanevalt (väljasta nimi ja kaal).
+
+mysql> select * from Kassid;
++----------+--------+---------+------------+---------+------+
+| Kassi_ID | Nimi   | Kaal_kg | Synniaasta | Linn_id | Sugu |
++----------+--------+---------+------------+---------+------+
+|        1 | Miku   |       2 |       2014 |       1 | I    |
+|        2 | Miisu  |     1.5 |       2015 |       2 | E    |
+|        3 | Muska  |       3 |       2011 |       2 | E    |
+|        4 | Trull  |     4.5 |       2010 |       1 | I    |
+|        5 | Musti  |       2 |       2015 |       2 | I    |
+|        6 | Triibu |     3.5 |       2011 |       1 | E    |
+|        7 | Emma   |       5 |       2010 |       2 | E    |
+|        8 | Miia   |       4 |       2012 |       2 | E    |
++----------+--------+---------+------------+---------+------+
+8 rows in set (0.00 sec)
+
+mysql> select Nimi, Synniaasta from Kassid order by Kaal_kg desc;
++--------+------------+
+| Nimi   | Synniaasta |
++--------+------------+
+| Emma   |       2010 |
+| Trull  |       2010 |
+| Miia   |       2012 |
+| Triibu |       2011 |
+| Muska  |       2011 |
+| Miku   |       2014 |
+| Musti  |       2015 |
+| Miisu  |       2015 |
++--------+------------+
+8 rows in set (0.00 sec)
+
+Järjesta kassid sünniaastate järgi kahanevalt, nime järgi kasvavalt (väljasta nimi ja sünniaasta)
+
+mysql> select Nimi, Synniaasta from Kassid order by Synniaasta desc, Nimi desc;
++--------+------------+
+| Nimi   | Synniaasta |
++--------+------------+
+| Musti  |       2015 |
+| Miisu  |       2015 |
+| Miku   |       2014 |
+| Miia   |       2012 |
+| Triibu |       2011 |
+| Muska  |       2011 |
+| Trull  |       2010 |
+| Emma   |       2010 |
++--------+------------+
+8 rows in set (0.00 sec)
+
+Muuda Triibu sünniaasta, uus sünniaasta on 2013.
+
+mysql> UPDATE Kassid SET Synniaasta = 2013 WHERE Nimi = 'Triibu';
+Query OK, 1 row affected (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+Lisa järgmine kass tabelisse KASSID: Kiisu kaaluga 4.0, sünniaasta 2010 ja Elukoha_id 1.
+
+mysql> INSERT INTO Kassid(Nimi, Kaal_kg, Synniaasta, Linn_id) VALUES ('Kiisu', 4.0, 2010, 1);
+Query OK, 1 row affected (0.01 sec)
+
+
+Kustuta tabelist 2014 aastal sündinud kassid.
+
+mysql> delete from Kassid where Synniaasta = 2014;
+Query OK, 1 row affected (0.01 sec)
+
+Väljasta kasside nimed ja kaalud (grammides).
+
+mysql> select Nimi, Kaal_kg * 1000 AS Kaal_g from Kassid;
++--------+--------+
+| Nimi   | Kaal_g |
++--------+--------+
+| Miisu  |   1500 |
+| Muska  |   3000 |
+| Trull  |   4500 |
+| Musti  |   2000 |
+| Triibu |   3500 |
+| Emma   |   5000 |
+| Miia   |   4000 |
+| Kiisu  |   4000 |
++--------+--------+
+8 rows in set (0.00 sec)
+
+Leia kassid, kelle kaal jääb 3 ja 5 kilogrammi vahele.
+
+mysql> select * from Kassid where Kaal_kg between 3 and 5;
++----------+--------+---------+------------+---------+------+
+| Kassi_ID | Nimi   | Kaal_kg | Synniaasta | Linn_id | Sugu |
++----------+--------+---------+------------+---------+------+
+|        3 | Muska  |       3 |       2011 |       2 | E    |
+|        4 | Trull  |     4.5 |       2010 |       1 | I    |
+|        6 | Triibu |     3.5 |       2013 |       1 | E    |
+|        7 | Emma   |       5 |       2010 |       2 | E    |
+|        8 | Miia   |       4 |       2012 |       2 | E    |
+|        9 | Kiisu  |       4 |       2010 |       1 | NULL |
++----------+--------+---------+------------+---------+------+
+6 rows in set (0.01 sec)
+
+Leia M-tähega algavate kasside nimed, kasuta väljal aliast m-ga algavad nimed.
+
+mysql> select Nimi AS 'm-ga algavad nimed' from Kassid where Nimi like 'M%';
++--------------------+
+| m-ga algavad nimed |
++--------------------+
+| Miisu              |
+| Muska              |
+| Musti              |
+| Miia               |
++--------------------+
+4 rows in set (0.00 sec)
+
+CREATE TABLE LINN1 (Linn_id integer(4) UNSIGNED NOT NULL AUTO_INCREMENT,                   
+	Nimi varchar(40) NOT NULL,
+        PRIMARY KEY(Linn_id));
+	
+INSERT INTO LINN1 (Nimi) VALUES 	('Tartu'),('Viljandi');
+
+
+Väljasta kasside nimed, kaalud ja elukohad.
+
+Veateate "Column 'Nimi' in field list is ambiguous" tõttu pidin muutma Kassid tabeli veeru nimi unikaalsemaks. 
+Seega --> mysql> alter table Kassid change column  Nimi Kassi_nimi varchar(40);
+
+
+mysql> select Kassi_nimi AS 'Kassi nimi', Kaal_kg, Nimi AS elukoht  FROM Kassid INNER JOIN LINN1 ON Kassid.Linn_id=LINN1.Linn_id;
++------------+---------+----------+
+| Kassi nimi | Kaal_kg | elukoht  |
++------------+---------+----------+
+| Miisu      |     1.5 | Viljandi |
+| Muska      |       3 | Viljandi |
+| Trull      |     4.5 | Tartu    |
+| Musti      |       2 | Viljandi |
+| Triibu     |     3.5 | Tartu    |
+| Emma       |       5 | Viljandi |
+| Miia       |       4 | Viljandi |
+| Kiisu      |       4 | Tartu    |
++------------+---------+----------+
+8 rows in set (0.00 sec)
+
+Väljasta Viljandis elavate kasside nimed, kaalud ja elukohad.
+
+mysql> select Kassi_nimi AS 'Kassi nimi', Kaal_kg, Nimi AS elukoht  FROM Kassid INNER JOIN LINN1 ON Kassid.Linn_id=LINN1.Linn_id WHERE LINN1.Nimi='Viljandi';
++------------+---------+----------+
+| Kassi nimi | Kaal_kg | elukoht  |
++------------+---------+----------+
+| Miisu      |     1.5 | Viljandi |
+| Muska      |       3 | Viljandi |
+| Musti      |       2 | Viljandi |
+| Emma       |       5 | Viljandi |
+| Miia       |       4 | Viljandi |
++------------+---------+----------+
+5 rows in set (0.00 sec)
+
+Leia kõik Viljandis elavad üle 3 kilogrammi kaaluvad kassid (Väljasta nimi, kaal ja elukoht)
+
+mysql> select Kassi_nimi AS 'Kassi nimi', Kaal_kg, Nimi AS elukoht  FROM Kassid INNER JOIN LINN1 ON Kassid.Linn_id=LINN1.Linn_id WHERE LINN1
++------------+---------+----------+
+| Kassi nimi | Kaal_kg | elukoht  |
++------------+---------+----------+
+| Emma       |       5 | Viljandi |
+| Miia       |       4 | Viljandi |
++------------+---------+----------+
+2 rows in set (0.00 sec)
+
+
+Leia kassid, kes on sündinud 2011 või 2015 aastal ja elavad Viljandis.
+
+mysql> select Kassi_nimi AS 'Kassi nimi', Kaal_kg, Nimi AS elukoht  FROM Kassid INNER JOIN LINN1 ON Kassid.Linn_id=LINN1.Linn_id WHERE LINN1.Nimi='Viljandi' and Kassid.Synniaasta=2011 or Kassid.Synniaasta=2015;
++------------+---------+----------+
+| Kassi nimi | Kaal_kg | elukoht  |
++------------+---------+----------+
+| Miisu      |     1.5 | Viljandi |
+| Muska      |       3 | Viljandi |
+| Musti      |       2 | Viljandi |
++------------+---------+----------+
+3 rows in set (0.00 sec)
+
+Leia kasside vanused (väljasta kassi nimi ja vanus)
+
+mysql> select Kassi_nimi AS 'Kassi nimi', 2020-Synniaasta AS Vanus from Kassid;
++------------+-------+
+| Kassi nimi | Vanus |
++------------+-------+
+| Miisu      |     5 |
+| Muska      |     9 |
+| Trull      |    10 |
+| Musti      |     5 |
+| Triibu     |     7 |
+| Emma       |    10 |
+| Miia       |     8 |
+| Kiisu      |    10 |
++------------+-------+
+8 rows in set (0.00 sec)
+
+Muuda eelnevat päringut lisades iga vanuse juurde sõna "-aastane". nt Miisu 1-aastane.
+
+mysql> select Kassi_nimi AS 'Kassi nimi', concat(2020-Synniaasta,'-aastane') AS Vanus from Kassid;
++------------+------------+
+| Kassi nimi | Vanus      |
++------------+------------+
+| Miisu      | 5-aastane  |
+| Muska      | 9-aastane  |
+| Trull      | 10-aastane |
+| Musti      | 5-aastane  |
+| Triibu     | 7-aastane  |
+| Emma       | 10-aastane |
+| Miia       | 8-aastane  |
+| Kiisu      | 10-aastane |
++------------+------------+
+8 rows in set (0.00 sec)
+
+Leia mitu kassi kummastki soost kokku on. Väljasta sugu ja vastav arv.
+
+mysql> select count(Sugu) AS 'Emane' from Kassid where sugu="E";
++-------+
+| Emane |
++-------+
+|     5 |
++-------+
+1 row in set (0.00 sec)
+
+mysql> select count(Sugu) AS 'Isane' from Kassid where sugu="I";
+| Isane |
++-------+
+|     2 |
++-------+
+1 row in set (0.00 sec)
+
+Leia kassid, kelle nimes on kõrvuti kaks I-tähte. väljasta nimi ja kaal.
+
+mysql> select Kassi_nimi, Kaal_kg from Kassid where Kassi_nimi like "%ii%";
++------------+---------+
+| Kassi_nimi | Kaal_kg |
++------------+---------+
+| Miisu      |     1.5 |
+| Triibu     |     3.5 |
+| Miia       |       4 |
+| Kiisu      |       4 |
++------------+---------+
+4 rows in set (0.00 sec)
+
+Väljasta kasside nimed ja sugu. Lahtris sugu peaks olema tähtede E ja I asemel sugu sõnana emane või isane.
+(Väljal Sugu I tähistab sõna isane, E tähistab emane). Vihje - funktsioon IF.
+
+mysql> select IF(Sugu="E",'emane', 'isane') Sugu, Kassi_nimi from Kassid;
+| Sugu  | Kassi_nimi |
+| emane | Miisu      |
+| emane | Muska      |
+| isane | Trull      |
+| isane | Musti      |
+| emane | Triibu     |
+| emane | Emma       |
+| emane | Miia       |
+| isane | Kiisu      |
++-------+------------+
+8 rows in set (0.00 sec)
+
+Väljasta iga sünniaasta keskmine kaal.
+
+mysql> select Synniaasta AS 'Sünniaasta', AVG(Kaal_kg) AS 'Keskmine kaal' from Kassid group by Synniaasta;
++-------------+---------------+
+| Sünniaasta  | Keskmine kaal |
++-------------+---------------+
+|        2010 |           4.5 |
+|        2011 |             3 |
+|        2012 |             4 |
+|        2013 |           3.5 |
+|        2015 |          1.75 |
++-------------+---------------+
+5 rows in set (0.00 sec)
+
+Leia mitu kassi elab igas linnas. Väljasta linn ja kasside arv.
+
+mysql> select Linn_id, round(sum(Linn_id)/Linn_id,0)  as 'Kasside arv' from Kassid group by Linn_id;
++---------+-------------+
+| Linn_id | Kasside arv |
++---------+-------------+
+|       1 |           3 |
+|       2 |           5 |
++---------+-------------+
+2 rows in set (0.00 sec)
+
+
