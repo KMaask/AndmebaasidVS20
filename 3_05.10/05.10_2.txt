@@ -1,0 +1,156 @@
+1. Loo failis koolitus_andmed.mdb olevate andmete põhjal tabelid Koolitusfirma ja Koolitaja.
+
+mysql> create table koolitusfirma (koolitusfirma_id int not null auto_increment primary key, nimetus varchar(70));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into koolitusfirma (nimetus) values ('BSC'), ('AS Traktor'), ('OU Lennukool'), ('OU Raamat'), ('Kaseke'), ('OU Sport');
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> create table koolitaja (koolitaja_id int not null auto_increment primary key, eesnimi varchar(70), perenimi varchar(70), koolitusfirma int);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into koolitaja (eesnimi, perenimi, koolitusfirma) values ('Juhan', 'Juurikas', 1), ('Jaak', 'Mets', 1), ('Mari', 'Kuusk', 1), ('Mari', 'Auu', 2), ('Mait', 'Kallur', 2), ('Eldur', 'Kala', 2), ('Kaspar', 'Vaal', 3), ('Aksel', 'Lendur', 3), ('Milvi', 'Keel', 5), ('Juta', 'Janes', 4), ('Jaan', 'Kaasik', 5), ('Viljar', 'Vaat', 3), ('Kati', 'Karu', 1), ('Kaido', 'Kai', 1);
+Query OK, 14 rows affected (0.00 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+2. Loo failis koolitusteema.xls olevate andmete põhjal tabel Koolitusteema.
+
+mysql> create table koolitusteema (koolitusteema_id int not null auto_increment primary key, nimetus varchar(70));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into koolitusteema (nimetus) values ('Andmebaaside loomine'), ('Java programmeerimine'), ('Lendamine'), ('Visual Basic'), ('Inimeste juhtimine'), ('Finantsplaneerimine'), ('Raamatupidamine'), ('Korvpall'), ('Keeled'), ('Masinate juhtimine'), ('MS Excel');
+Query OK, 11 rows affected (0.00 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+
+3. Loo failis koolituskursus.txt olevate andmete põhjal tabel Koolituskursus.
+
+mysql> create table koolituskursus (koolituskursus_id int not null auto_increment primary key, koolituse_nimi varchar(70), kestus_tundides int(4), maksumus int, koolitaja_id int, koolituse_teema_id int);
+Query OK, 0 rows affected (0.00 sec)
+
+4. Too tekstifailist andmed eelnevalt loodud tabelisse.
+
+mysql> insert into koolituskursus (koolituse_nimi, kestus_tundides, maksumus, koolitaja_id, koolituse_teema_id)    -> values ('Andmebaaside algkursus',40,1000,1,1),    -> ('Andmebaasid edasijoudnutele',80,6000,14,1),
+    -> ('Lendurikursus LE23',200,50000,3,3),
+    -> ('Lendurikursus edasijoudnutele',1000,20000,3,3),
+    -> ('Prantsuse keel',300,5000,5,9),
+    -> ('Inglise keel',40,1200,5,9),
+    -> ('Algtoed korvpallis',40,400,2,8),
+    -> ('Vaiketraktorid',40,1400,4,10),
+    -> ('Tood murutraktoriga',20,200,5,10),
+    -> ('Tood muruniidukiga',10,150,6,10),
+    -> ('VBA kasutamine Accessis',40,1350,1,4),
+    -> ('VBA kasutamine Excelis',40,1450,1,4),
+    -> ('Tark firmajuht',40,1600,9,5),
+    -> ('EXCEL 2007 jatkukursus',8,600,13,11);
+Query OK, 14 rows affected (0.00 sec)
+Records: 14  Duplicates: 0  Warnings: 0
+
+5. Lisa tabelisse Koolitusfirma väli aadress (lisatava välja andmetüüp on varchar(100)).
+
+mysql> alter table koolitusfirma add aadress varchar(100);
+Query OK, 6 rows affected (0.00 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+6. Muuda tabelis Koolitusteema väli Nimetus ümber väljaks Teema.
+
+mysql> alter table koolitusteema change Nimetus Teema VARCHAR(100);
+Query OK, 11 rows affected (0.00 sec)
+Records: 11  Duplicates: 0  Warnings: 0
+
+7. Muuda koolituse Lendurikursus LE23 maksumust. Uueks maksumuseks pane 50000.
+
+mysql> UPDATE koolituskursus SET maksumus = 50000 WHERE koolituskursus_id = 3;
+Query OK, 0 rows affected (0.00 sec)
+Rows matched: 1  Changed: 0  Warnings: 0
+
+8. Lisa tabelisse Koolitusfirma juurde üks kirje. Too siia lisamiskäsk. Näita sisestatud andmetega tabelit.
+
+mysql> insert into koolitusfirma (nimetus, aadress) values ('OU AUTO', '');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from koolitusfirma;
++------------------+--------------+---------+
+| koolitusfirma_id | nimetus      | aadress |
++------------------+--------------+---------+
+|                1 | BSC          | NULL    |
+|                2 | AS Traktor   | NULL    |
+|                3 | OU Lennukool | NULL    |
+|                4 | OU Raamat    | NULL    |
+|                5 | Kaseke       | NULL    |
+|                6 | OU Sport     | NULL    |
+|                7 | OU AUTO      |         |
++------------------+--------------+---------+
+7 rows in set (0.00 sec)
+
+
+9. Väljasta koolitaja nimi, firma kus, ta koolitab ja koolituskursus koos hinna ning tundide arvuga.
+
+mysql> SELECT concat(Eesnimi,' ',Perenimi) AS Koolitaja, nimetus Firma, Koolituse_nimi, Maksumus, Kestus_tundides from koolitaja as K, koolitusfirma as F, koolituskursus as C where C.koolitaja_ID=K.koolitaja_ID and K.koolitusfirma=F.koolitusfirma_ID;
++----------------+------------+-------------------------------+----------+-----------------+
+| Koolitaja      | Firma      | Koolituse_nimi                | Maksumus | Kestus_tundides |
++----------------+------------+-------------------------------+----------+-----------------+
+| Juhan Juurikas | BSC        | Andmebaaside algkursus        |     1000 |              40 |
+| Kaido Kai      | BSC        | Andmebaasid edasijoudnutele   |     6000 |              80 |
+| Mari Kuusk     | BSC        | Lendurikursus LE23            |    50000 |             200 |
+| Mari Kuusk     | BSC        | Lendurikursus edasijoudnutele |    20000 |            1000 |
+| Mait Kallur    | AS Traktor | Prantsuse keel                |     5000 |             300 |
+| Mait Kallur    | AS Traktor | Inglise keel                  |     1200 |              40 |
+| Jaak Mets      | BSC        | Algtoed korvpallis            |      400 |              40 |
+| Mari Auu       | AS Traktor | Vaiketraktorid                |     1400 |              40 |
+| Mait Kallur    | AS Traktor | Tood murutraktoriga           |      200 |              20 |
+| Eldur Kala     | AS Traktor | Tood muruniidukiga            |      150 |              10 |
+| Juhan Juurikas | BSC        | VBA kasutamine Accessis       |     1350 |              40 |
+| Juhan Juurikas | BSC        | VBA kasutamine Excelis        |     1450 |              40 |
+| Milvi Keel     | Kaseke     | Tark firmajuht                |     1600 |              40 |
+| Kati Karu      | BSC        | EXCEL 2007 jatkukursus        |      600 |               8 |
++----------------+------------+-------------------------------+----------+-----------------+
+14 rows in set (0.00 sec)
+
+10. Näita iga koolituse korral, kui suur on vastava koolituse 1 tunni hind.
+
+mysql> select koolituse_nimi, (maksumus/kestus_tundides) AS Tunnihind FROM koolituskursus;
++-------------------------------+-----------+
+| koolituse_nimi                | Tunnihind |
++-------------------------------+-----------+
+| Andmebaaside algkursus        |   25.0000 |
+| Andmebaasid edasijoudnutele   |   75.0000 |
+| Lendurikursus LE23            |  250.0000 |
+| Lendurikursus edasijoudnutele |   20.0000 |
+| Prantsuse keel                |   16.6667 |
+| Inglise keel                  |   30.0000 |
+| Algtoed korvpallis            |   10.0000 |
+| Vaiketraktorid                |   35.0000 |
+| Tood murutraktoriga           |   10.0000 |
+| Tood muruniidukiga            |   15.0000 |
+| VBA kasutamine Accessis       |   33.7500 |
+| VBA kasutamine Excelis        |   36.2500 |
+| Tark firmajuht                |   40.0000 |
+| EXCEL 2007 jatkukursus        |   75.0000 |
++-------------------------------+-----------+
+14 rows in set (0.00 sec)
+
+11. Väljasta iga koolitusfirma nimi ja teises veerus, selles firmas töötavate koolitajate nimed komadega eraldatult.
+
+mysql> SELECT koolitusfirma.nimetus AS koolitusfirma, CONCAT_WS(', ', perenimi,eesnimi) AS Koolitaja FROM koolitaja INNER JOIN koolitusfirma ON koolitusfirma.koolitusfirma_ID=koolitaja.koolitusfirma;
++---------------+-----------------+
+| koolitusfirma | Koolitaja       |
++---------------+-----------------+
+| BSC           | Juurikas, Juhan |
+| BSC           | Mets, Jaak      |
+| BSC           | Kuusk, Mari     |
+| AS Traktor    | Auu, Mari       |
+| AS Traktor    | Kallur, Mait    |
+| AS Traktor    | Kala, Eldur     |
+| OU Lennukool  | Vaal, Kaspar    |
+| OU Lennukool  | Lendur, Aksel   |
+| Kaseke        | Keel, Milvi     |
+| OU Raamat     | Janes, Juta     |
+| Kaseke        | Kaasik, Jaan    |
+| OU Lennukool  | Vaat, Viljar    |
+| BSC           | Karu, Kati      |
+| BSC           | Kai, Kaido      |
++---------------+-----------------+
+14 rows in set (0.00 sec)
+
+
