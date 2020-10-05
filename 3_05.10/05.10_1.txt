@@ -1,0 +1,767 @@
+1. Lisa tabelisse RAAMAT uus väli Tiraaz, mis on täisarvu tüüpi.
+
+mysql> alter table RAAMAT add column Tiraaz INT;
+Query OK, 41 rows affected (0.01 sec)
+Records: 41  Duplicates: 0  Warnings: 0
+
+2.Muuda tabelis RAAMAT väli Koht väljaks Valjaandja.
+
+mysql> alter table RAAMAT change column Koht Valjaandja varchar(50);
+Query OK, 0 rows affected (0.01 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+3. Lisa tabelisse laenutamine veel 5 rida andmeid (erinevad lugejad laenutavad erinevaid
+raamatuid, kõik ei ole veel raamatuid tagastanud).
+
+mysql> INSERT INTO LAENUTAMINE (Kuupaev, Lugeja_ID, Raamatu_ID, Tahtaeg, Tagastamine)
+    ->     VALUES ('20.08.10', '11', '34', '20.09.11', ''),
+    ->     ('20.08.17', '12', '39', '20.09.18', ''),
+    ->     ('20.08.22', '13', '40', '20.09.23', ''),
+    ->     ('20.08.28', '14', '24', '20.09.29', ''),
+    ->     ('20.08.30', '15', '25', '20.10.01', '');
+Query OK, 5 rows affected, 5 warnings (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 5
+
+4. Muuda tabelis RAAMAT välja Autor andmetüüpi, uueks tüübiks varchar(150)
+
+mysql> alter table RAAMAT modify Autor varchar(150);
+Query OK, 41 rows affected (0.00 sec)
+Records: 41  Duplicates: 0  Warnings: 0
+
+5. Kustuta tabelist RAAMAT väli Tiraaz.
+
+mysql> alter table RAAMAT drop column Tiraaz;
+Query OK, 41 rows affected (0.00 sec)
+Records: 41  Duplicates: 0  Warnings: 0
+
+6. Väljasta raamatute pealkirjad ja autorid, mida on lugejad laenutanud.
+
+
+mysql> select RAAMAT.Pealkiri, RAAMAT.Autor from RAAMAT, LAENUTAMINE WHERE RAAMAT.Raamatu_ID=LAENUTAMINE.Raamatu_ID;
++-----------------------+------------------+
+| Pealkiri              | Autor            |
++-----------------------+------------------+
+| Frankestein           | Mary Shelly      |
+| Leninismi alustest    | J.Stalin         |
+| Pimeduse pahem käsi   | U.K.LeQuine      |
+| Surnud hinged         | Nikolai Kogol    |
+| Kalevipoeg            | A.Kivirähk       |
+| Inimesed maskides     | V.Läcis          |
+| Arvuti A ja B         | Rein Hanson      |
+| Kasuema               | Silvia Rannamaa  |
+| Arabella              | Aino Pervik      |
+| Ja päike tõuseb       | Hernst Hemingway |
+| Vanamees ja meri      | Hernst Hemingway |
+| Soo                   | Oskar Luts       |
+| Kevade                | Oskar Luts       |
+| Sõda ja rahu          | Lev Tolstoi      |
+| Kuritöö ja karistus   | Dostojevski      |
++-----------------------+------------------+
+15 rows in set (0.01 sec)
+
+7. Väljasta raamatute pealkirjad ja mitu korda on igat raamatut väljalaenatud.
+
+
+mysql> select Pealkiri, count(Pealkiri) from RAAMAT group by Raamatu_ID;
++-----------------------+-----------------+
+| Pealkiri              | count(Pealkiri) |
++-----------------------+-----------------+
+| Asum                  |               1 |
+| Ajaseemned            |               1 |
+| Frankestein           |               1 |
+| Tõde ja õigus         |               1 |
+| Kevade                |               1 |
+| Daam sinises          |               1 |
+| Mina ja George        |               1 |
+| Käitumise anatoomia   |               1 |
+| Konstitutsioon        |               1 |
+| Rahvasõbrad           |               1 |
+| Leninismi alustest    |               1 |
+| Pimeduse pahem käsi   |               1 |
+| Mis teha              |               1 |
+| Surnud hinged         |               1 |
+| Kalevipoeg            |               1 |
+| Massi ebajumal        |               1 |
+| Inimesed maskides     |               1 |
+| Hiline kevad          |               1 |
+| Testament             |               1 |
+| Pioneerid             |               1 |
+| Surma ratsanikud      |               1 |
+| Kana ja muna          |               1 |
+| Naksitrallid          |               1 |
+| Arvuti A ja B         |               1 |
+| Kasuema               |               1 |
+| Kunksmoor             |               1 |
+| Arabella              |               1 |
+| Bullerby lapsed       |               1 |
+| Muumitrollid          |               1 |
+| Ja päike tõuseb       |               1 |
+| Vanamees ja meri      |               1 |
+| 10 aastat hiljem      |               1 |
+| Nukitsamees           |               1 |
+| Soo                   |               1 |
+| Vari                  |               1 |
+| Vares                 |               1 |
+| Kevade                |               1 |
+| Suvi                  |               1 |
+| Sõda ja rahu          |               1 |
+| Kuritöö ja karistus   |               1 |
+| Saladuslik saar       |               1 |
++-----------------------+-----------------+
+41 rows in set (0.00 sec)
+
+
+8. Muuda laenutamise tabelit lisades mõnele kirjele tagastamisajad.
+
+mysql> UPDATE LAENUTAMINE SET Tagastamine='2020-09-07' WHERE Laenamise_ID=21;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> UPDATE LAENUTAMINE SET Tagastamine='2020-09-18' WHERE Laenamise_ID=22;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+9. Leia laenutajad, kes on oma raamatu tagastanud.
+
+mysql> select Eesnimi, Perenimi from LUGEJA, LAENUTAMINE WHERE LUGEJA.Lugeja_ID=LAENUTAMINE.Lugeja_ID AND LAENUTAMINE.Tagastamine;
++---------+----------+
+| Eesnimi | Perenimi |
++---------+----------+
+| Mari    | Maasikas |
+| Joosep  | Jalakas  |
+| Tiit    | Tikk     |
+| Ragnar  | Roos     |
+| Robert  | Rohi     |
+| Kevin   | Kivi     |
+| Sille   | Siil     |
++---------+----------+
+7 rows in set (0.00 sec)
+
+
+10. Väljasta raamatuid laenutanud lugejate ees- ja perekonnanimed ühes veerus ja nimeta veerg laenutajaks.
+
+mysql> select concat(Eesnimi,' ', Perenimi) AS Laenutaja from LUGEJA, LAENUTAMINE WHERE LUGEJA.Lugeja_ID=LAENUTAMINE.Lugeja_ID;
++----------------+
+| Laenutaja      |
++----------------+
+| Kalle Kohin    |
+| Tiia Tuisk     |
+| Pille Pill     |
+| Kati Kask      |
+| Malle Moos     |
+| Mari Maasikas  |
+| Joosep Jalakas |
+| Tiit Tikk      |
+| Ragnar Roos    |
+| Robert Rohi    |
+| Kevin Kivi     |
+| Sille Siil     |
+| Lilli Lill     |
+| Luisa Tuul     |
+| Siiri Lilleke  |
++----------------+
+15 rows in set (0.00 sec)
+
+
+11. Leia mitu raamatut on iga laenutaja laenanud kokku (väljasta lugeja ees- ja perenimi ning laenutuste arv)
+
+mysql> select Eesnimi, Perenimi, count(LUGEJA.Lugeja_ID) from LUGEJA, LAENUTAMINE WHERE LUGEJA.Lugeja_ID=LAENUTAMINE.Lugeja_ID group by LUGEJA.Lugeja_ID;
++---------+----------+-------------------------+
+| Eesnimi | Perenimi | count(LUGEJA.Lugeja_ID) |
++---------+----------+-------------------------+
+| Kalle   | Kohin    |                       1 |
+| Tiia    | Tuisk    |                       1 |
+| Pille   | Pill     |                       1 |
+| Kati    | Kask     |                       1 |
+| Malle   | Moos     |                       1 |
+| Mari    | Maasikas |                       1 |
+| Joosep  | Jalakas  |                       1 |
+| Tiit    | Tikk     |                       1 |
+| Ragnar  | Roos     |                       1 |
+| Robert  | Rohi     |                       1 |
+| Kevin   | Kivi     |                       1 |
+| Sille   | Siil     |                       1 |
+| Lilli   | Lill     |                       1 |
+| Luisa   | Tuul     |                       1 |
+| Siiri   | Lilleke  |                       1 |
++---------+----------+-------------------------+
+15 rows in set (0.01 sec)
+
+12. Grupeeri raamatud väljaandmise aastate järgi ja leia igal aastal lehekülgede arv ja hind kokku.
+
+mysql> select Aasta, sum(Lk_arv) AS 'Lk_arv', sum(Hind) AS 'Hind' from RAAMAT GROUP BY Aasta;
++-------+--------+------+
+| Aasta | Lk_arv | Hind |
++-------+--------+------+
+|  1920 |    459 |  235 |
+|  1923 |    145 |   45 |
+|  1928 |    287 |   63 |
+|  1938 |    234 |  327 |
+|  1944 |    287 |   56 |
+|  1945 |    625 |  111 |
+|  1948 |    253 |   72 |
+|  1950 |    175 |   43 |
+|  1951 |    176 |   23 |
+|  1955 |    183 |  821 |
+|  1956 |    682 |   62 |
+|  1963 |    645 |  143 |
+|  1964 |    312 |   83 |
+|  1966 |     67 |   75 |
+|  1968 |    189 |   29 |
+|  1971 |     56 |   45 |
+|  1973 |    885 |   53 |
+|  1975 |    198 |   55 |
+|  1976 |    193 |   35 |
+|  1977 |    385 |   87 |
+|  1978 |    265 |   61 |
+|  1980 |    150 |   45 |
+|  1982 |    199 |   26 |
+|  1985 |    187 |  876 |
+|  1986 |    324 |  140 |
+|  1988 |    315 |  117 |
+|  1989 |    919 |  294 |
+|  1992 |    287 |    1 |
+|  1996 |      2 |  450 |
+|  1997 |    195 |  488 |
+|  1998 |      4 |   77 |
++-------+--------+------+
+31 rows in set (0.00 sec)
+
+13. Leia kõigi raamatute kogumaksumus, raamatute keskmine maksumus, kõige odavam ja kallim raamat.
+
+mysql> select sum(Hind), avg(Hind), min(Hind), max(Hind) from RAAMAT;
++-----------+-------------------+-----------+-----------+
+| sum(Hind) | avg(Hind)         | min(Hind) | max(Hind) |
++-----------+-------------------+-----------+-----------+
+|      5038 | 122.8780487804878 |         1 |       876 |
++-----------+-------------------+-----------+-----------+
+1 row in set (0.00 sec)
+
+14. Milliseid raamatuid ei ole välja laenatud?
+
+
+mysql> select Pealkiri, Autor from RAAMAT LEFT JOIN LAENUTAMINE ON RAAMAT.Raamatu_ID=LAENUTAMINE.Raamatu_ID  WHERE Lugeja_ID is null;
++----------------------+-----------------+
+| Pealkiri             | Autor           |
++----------------------+-----------------+
+| Asum                 | Isaac Asimov    |
+| Ajaseemned           | Isaac Asimov    |
+| Tõde ja õigus        | A.H.Tammsaare   |
+| Kevade               | Oskar Luts      |
+| Daam sinises         | T.Trubetski     |
+| Mina ja George       | T.Trubetski     |
+| Käitumise anatoomia  | Sigmund Freud   |
+| Konstitutsioon       | J.Stalin        |
+| Rahvasõbrad          | V.I.Lenin       |
+| Mis teha             | J.K.Ibin        |
+| Massi ebajumal       | V.Läcis         |
+| Hiline kevad         | V.Läcis         |
+| Testament            | Rex Stout       |
+| Pioneerid            | J.F.Cooper      |
+| Surma ratsanikud     | M.Kivistik      |
+| Kana ja muna         | Kait Marandi    |
+| Naksitrallid         | Ellen Niit      |
+| Kunksmoor            | Aino Perg       |
+| Bullerby lapsed      | Astrid Lindgren |
+| Muumitrollid         | Tove Janson     |
+| 10 aastat hiljem     | Alexander Dumas |
+| Nukitsamees          | Oskar Luts      |
+| Vari                 | Juhan Liiv      |
+| Vares                | Jüri Tuulik     |
+| Suvi                 | Oskar Luts      |
+| Saladuslik saar      | Jules Verne     |
++----------------------+-----------------+
+26 rows in set (0.00 sec)
+
+
+15. Milline raamat on laenatud välja esimesena, milline viimasena?
+
+mysql> select Pealkiri AS Esimene from RAAMAT where Raamatu_ID in (select Raamatu_ID from LAENUTAMINE WHERE Kuupaev = (select min(Kuupaev) from LAENUTAMINE));
++---------+
+| Esimene |
++---------+
+| Soo     |
++---------+
+1 row in set (0.00 sec)
+
+mysql> select Pealkiri AS Viimane from RAAMAT where Raamatu_ID in (select Raamatu_ID from LAENUTAMINE WHERE Kuupaev = (select max(Kuupaev) from LAENUTAMINE));
++---------+
+| Viimane |
++---------+
+| Kasuema |
++---------+
+1 row in set (0.00 sec)
+
+
+16. Leia lugejate sooline jaotuvus (palju nais-, palju meessoost).
+
+mysql> select sum(if(left(Isikukood,1)=3,1,0)) AS Mehed, sum(if(left(Isikukood,1)=4,1,0)) AS Naised from LUGEJA;
++-------+--------+
+| Mehed | Naised |
++-------+--------+
+|    13 |     14 |
++-------+--------+
+1 row in set (0.00 sec)
+
+17. Leia iga lugeja sünnipäev st päev, millal laenutaja sündis.
+
+mysql> select concat(Eesnimi, ' ', Perenimi) AS Laenutaja, concat(substring(Isikukood,6,2),'.', substring(Isikukood,4,2)) AS Synni
++----------------+-----------+
+| Laenutaja      | Synnipaev |
++----------------+-----------+
+| Kalle Kohin    | 26.10     |
+| Tiia Tuisk     | 29.11     |
+| Pille Pill     | 30.10     |
+| Kati Kask      | 16.10     |
+| Malle Moos     | 01.10     |
+| Mari Maasikas  | 24.10     |
+| Joosep Jalakas | 22.10     |
+| Tiit Tikk      | 06.12     |
+| Ragnar Roos    | 21.11     |
+| Robert Rohi    | 06.06     |
+| Kevin Kivi     | 02.06     |
+| Sille Siil     | 26.10     |
+| Lilli Lill     | 22.10     |
+| Luisa Tuul     | 16.12     |
+| Siiri Lilleke  | 23.12     |
+| Kadri Kade     | 21.10     |
+| Vaiko Kook     | 20.11     |
+| Veiko Vesi     | 02.10     |
+| Hannes Hein    | 26.12     |
+| Leo Loots      | 29.04     |
+| Liia Lips      | 16.11     |
+| Kalev Komm     | 26.09     |
+| Rita Rehv      | 23.07     |
+| Janek Jooksik  | 22.11     |
+| Jane Jänes     | 16.09     |
+| Mart Karu      | 31.12     |
+| Kati Karu      | 31.01     |
++----------------+-----------+
+27 rows in set (0.00 sec)
+
+18. Leia lugeja sünnikuu, väljasta lugeja nimi ja sünnikuu.
+
+mysql> select concat(Eesnimi, ' ', Perenimi) AS Laenutaja, substring(isikukood,4,2) AS Synnikuu from LUGEJA;
++----------------+----------+
+| Laenutaja      | Synnikuu |
++----------------+----------+
+| Kalle Kohin    | 10       |
+| Tiia Tuisk     | 11       |
+| Pille Pill     | 10       |
+| Kati Kask      | 10       |
+| Malle Moos     | 10       |
+| Mari Maasikas  | 10       |
+| Joosep Jalakas | 10       |
+| Tiit Tikk      | 12       |
+| Ragnar Roos    | 11       |
+| Robert Rohi    | 06       |
+| Kevin Kivi     | 06       |
+| Sille Siil     | 10       |
+| Lilli Lill     | 10       |
+| Luisa Tuul     | 12       |
+| Siiri Lilleke  | 12       |
+| Kadri Kade     | 10       |
+| Vaiko Kook     | 11       |
+| Veiko Vesi     | 10       |
+| Hannes Hein    | 12       |
+| Leo Loots      | 04       |
+| Liia Lips      | 11       |
+| Kalev Komm     | 09       |
+| Rita Rehv      | 07       |
+| Janek Jooksik  | 11       |
+| Jane Jänes     | 09       |
+| Mart Karu      | 12       |
+| Kati Karu      | 01       |
++----------------+----------+
+27 rows in set (0.00 sec)
+
+19. Leia lugeja sünniaasta, väljasta lugeja nimi ja sünniaasta.
+
+mysql> select concat(Eesnimi, ' ', Perenimi) AS Laenutaja, concat('19', MID(isikukood,2,2)) AS Synnikuu from LUGEJA;
++----------------+----------+
+| Laenutaja      | Synnikuu |
++----------------+----------+
+| Kalle Kohin    | 1989     |
+| Tiia Tuisk     | 1990     |
+| Pille Pill     | 1991     |
+| Kati Kask      | 1990     |
+| Malle Moos     | 1989     |
+| Mari Maasikas  | 1988     |
+| Joosep Jalakas | 1988     |
+| Tiit Tikk      | 1987     |
+| Ragnar Roos    | 1989     |
+| Robert Rohi    | 1988     |
+| Kevin Kivi     | 1990     |
+| Sille Siil     | 1990     |
+| Lilli Lill     | 1989     |
+| Luisa Tuul     | 1991     |
+| Siiri Lilleke  | 1990     |
+| Kadri Kade     | 1989     |
+| Vaiko Kook     | 1988     |
+| Veiko Vesi     | 1987     |
+| Hannes Hein    | 1992     |
+| Leo Loots      | 1989     |
+| Liia Lips      | 1991     |
+| Kalev Komm     | 1988     |
+| Rita Rehv      | 1991     |
+| Janek Jooksik  | 1989     |
+| Jane Jänes     | 1990     |
+| Mart Karu      | 1991     |
+| Kati Karu      | 1989     |
++----------------+----------+
+27 rows in set (0.00 sec)
+
+21. Väljasta lugeja eesnimi, perenimi, sünniaeg (nt 02.03.06), isikukood.
+
+mysql> select concat(Eesnimi, ' ', Perenimi) AS Laenutaja, concat(MID(Isikukood,6,2),'.',MID(Isikukood,4,2),'.','19', MID(isikukood,2,2)) AS Synniaeg from LUGEJA;
++----------------+------------+
+| Laenutaja      | Synniaeg   |
++----------------+------------+
+| Kalle Kohin    | 26.10.1989 |
+| Tiia Tuisk     | 29.11.1990 |
+| Pille Pill     | 30.10.1991 |
+| Kati Kask      | 16.10.1990 |
+| Malle Moos     | 01.10.1989 |
+| Mari Maasikas  | 24.10.1988 |
+| Joosep Jalakas | 22.10.1988 |
+| Tiit Tikk      | 06.12.1987 |
+| Ragnar Roos    | 21.11.1989 |
+| Robert Rohi    | 06.06.1988 |
+| Kevin Kivi     | 02.06.1990 |
+| Sille Siil     | 26.10.1990 |
+| Lilli Lill     | 22.10.1989 |
+| Luisa Tuul     | 16.12.1991 |
+| Siiri Lilleke  | 23.12.1990 |
+| Kadri Kade     | 21.10.1989 |
+| Vaiko Kook     | 20.11.1988 |
+| Veiko Vesi     | 02.10.1987 |
+| Hannes Hein    | 26.12.1992 |
+| Leo Loots      | 29.04.1989 |
+| Liia Lips      | 16.11.1991 |
+| Kalev Komm     | 26.09.1988 |
+| Rita Rehv      | 23.07.1991 |
+| Janek Jooksik  | 22.11.1989 |
+| Jane Jänes     | 16.09.1990 |
+| Mart Karu      | 31.12.1991 |
+| Kati Karu      | 31.01.1989 |
++----------------+------------+
+27 rows in set (0.00 sec)
+
+22.Lisa Lugeja tabelisse järgmised kirjed 
+Mari Mustikas, isikukood: 60101013462, aadress: Tartu Tähe 43-1, käib lasteaias Ristikhein 
+Magnus Moos, isikukood: 50211132136, aadress: Tartu Küüni 23-11, käib lasteaias Rõõmuratas
+
+mysql> insert into LUGEJA (Eesnimi, Perenimi, Isikukood, Aadress, Asutus)
+    -> VALUES('Mari', 'Mustikas', '60101013462', 'Tartu Tähe 43-1', 'Lasteaed Ristikhein'),
+    -> ('Magnus', 'Moos', '50211132136', 'Tartu Küüni 23-11', 'Lasteaed Rõõmuratas');
+Query OK, 2 rows affected (0.00 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+23. Leia iga sünniaasta algus ka 19 või 20
+
+mysql> select Eesnimi, Perenimi, if(substring(Isikukood,1,1)>='5', '20', '19') AS 'Synniaasta algus' from LUGEJA;
++---------+----------+------------------+
+| Eesnimi | Perenimi | Synniaasta algus |
++---------+----------+------------------+
+| Kalle   | Kohin    | 19               |
+| Tiia    | Tuisk    | 19               |
+| Pille   | Pill     | 19               |
+| Kati    | Kask     | 19               |
+| Malle   | Moos     | 19               |
+| Mari    | Maasikas | 19               |
+| Joosep  | Jalakas  | 19               |
+| Tiit    | Tikk     | 19               |
+| Ragnar  | Roos     | 19               |
+| Robert  | Rohi     | 19               |
+| Kevin   | Kivi     | 19               |
+| Sille   | Siil     | 19               |
+| Lilli   | Lill     | 19               |
+| Luisa   | Tuul     | 19               |
+| Siiri   | Lilleke  | 19               |
+| Kadri   | Kade     | 19               |
+| Vaiko   | Kook     | 19               |
+| Veiko   | Vesi     | 19               |
+| Hannes  | Hein     | 19               |
+| Leo     | Loots    | 19               |
+| Liia    | Lips     | 19               |
+| Kalev   | Komm     | 19               |
+| Rita    | Rehv     | 19               |
+| Janek   | Jooksik  | 19               |
+| Jane    | Jänes    | 19               |
+| Mart    | Karu     | 19               |
+| Kati    | Karu     | 19               |
+| Mari    | Mustikas | 20               |
+| Magnus  | Moos     | 20               |
++---------+----------+------------------+
+29 rows in set (0.00 sec)
+
+
+24.Uuri vanuse arvutamist järgmiselt veebilehelt http://dev.mysql.com/doc/refman/5.0/en/date-calculations.html
+
+25.Leia kõikide lugejate vanused. Väljasta eenimi, perenimi ja vanus, kasuta aliasi.
+
+ALAMPÄRINGUD: (kasuta ülesannete lahendamisel alampäringuid)
+
+
+mysql> select Eesnimi, Perenimi, TIMESTAMPDIFF(YEAR, concat(if(substring(Isikukood,1,1)>='5', '20', '19'), substring(Isikukood,2,2),'-',substring(Isikukood,4,2),'-',substring(Isikukood,6,2)),now()) AS Vanus from LUGEJA;
++---------+----------+-------+
+| Eesnimi | Perenimi | Vanus |
++---------+----------+-------+
+| Kalle   | Kohin    |    30 |
+| Tiia    | Tuisk    |    29 |
+| Pille   | Pill     |    28 |
+| Kati    | Kask     |    29 |
+| Malle   | Moos     |    31 |
+| Mari    | Maasikas |    31 |
+| Joosep  | Jalakas  |    31 |
+| Tiit    | Tikk     |    32 |
+| Ragnar  | Roos     |    30 |
+| Robert  | Rohi     |    32 |
+| Kevin   | Kivi     |    30 |
+| Sille   | Siil     |    29 |
+| Lilli   | Lill     |    30 |
+| Luisa   | Tuul     |    28 |
+| Siiri   | Lilleke  |    29 |
+| Kadri   | Kade     |    30 |
+| Vaiko   | Kook     |    31 |
+| Veiko   | Vesi     |    33 |
+| Hannes  | Hein     |    27 |
+| Leo     | Loots    |    31 |
+| Liia    | Lips     |    28 |
+| Kalev   | Komm     |    32 |
+| Rita    | Rehv     |    29 |
+| Janek   | Jooksik  |    30 |
+| Jane    | Jänes    |    30 |
+| Mart    | Karu     |    28 |
+| Kati    | Karu     |    31 |
+| Mari    | Mustikas |    19 |
+| Magnus  | Moos     |    17 |
++---------+----------+-------+
+29 rows in set (0.00 sec)
+
+26.Leia vanima raamatu pealkiri, väljaandmise aasta ja autor.
+
+mysql> select Pealkiri, Aasta, Autor from RAAMAT where Aasta=(select min(Aasta) from RAAMAT);
++-----------------+-------+---------------+
+| Pealkiri        | Aasta | Autor         |
++-----------------+-------+---------------+
+| Tõde ja õigus   |  1920 | A.H.Tammsaare |
++-----------------+-------+---------------+
+1 row in set (0.00 sec)
+
+27. Leia kõige uuema raamatu pealkiri, väljaandmise aasta ja autor.
+
+mysql> select Pealkiri, Aasta, Autor from RAAMAT where Aasta=(select max(Aasta) from RAAMAT);
++--------------+-------+-------------+
+| Pealkiri     | Aasta | Autor       |
++--------------+-------+-------------+
+| Muumitrollid |  1998 | Tove Janson |
++--------------+-------+-------------+
+1 row in set (0.00 sec)
+
+
+28. Leia raamatute keskmine vanus.
+
+mysql> select avg(Aasta) AS 'Keskmine vanus' from RAAMAT;
++----------------+
+| Keskmine vanus |
++----------------+
+|      1970.2683 |
++----------------+
+1 row in set (0.00 sec)
+
+29. Leia keskmisest vanemad raamatud (pealkiri, vanus).
+
+mysql> select Pealkiri, Aasta from RAAMAT where Aasta < (select avg(Aasta) from RAAMAT);
++--------------------+-------+
+| Pealkiri           | Aasta |
++--------------------+-------+
+| Frankestein        |  1968 |
+| Tõde ja õigus      |  1920 |
+| Kevade             |  1945 |
+| Konstitutsioon     |  1944 |
+| Rahvasõbrad        |  1951 |
+| Leninismi alustest |  1945 |
+| Mis teha           |  1950 |
+| Kasuema            |  1923 |
+| Kunksmoor          |  1966 |
+| Ja päike tõuseb    |  1938 |
+| Vanamees ja meri   |  1964 |
+| 10 aastat hiljem   |  1955 |
+| Vari               |  1928 |
+| Vares              |  1948 |
+| Sõda ja rahu       |  1963 |
+| Saladuslik saar    |  1956 |
++--------------------+-------+
+16 rows in set (0.00 sec)
+
+
+30. Leia laenutatud raamatute nimed ja autorid. (Kasuta predikaati IN)
+
+mysql> select Pealkiri, Autor from RAAMAT where Raamatu_ID in (select Raamatu_ID from LAENUTAMINE);
++-----------------------+------------------+
+| Pealkiri              | Autor            |
++-----------------------+------------------+
+| Frankestein           | Mary Shelly      |
+| Leninismi alustest    | J.Stalin         |
+| Pimeduse pahem käsi   | U.K.LeQuine      |
+| Surnud hinged         | Nikolai Kogol    |
+| Kalevipoeg            | A.Kivirähk       |
+| Inimesed maskides     | V.Läcis          |
+| Arvuti A ja B         | Rein Hanson      |
+| Kasuema               | Silvia Rannamaa  |
+| Arabella              | Aino Pervik      |
+| Ja päike tõuseb       | Hernst Hemingway |
+| Vanamees ja meri      | Hernst Hemingway |
+| Soo                   | Oskar Luts       |
+| Kevade                | Oskar Luts       |
+| Sõda ja rahu          | Lev Tolstoi      |
+| Kuritöö ja karistus   | Dostojevski      |
++-----------------------+------------------+
+15 rows in set (0.00 sec)
+
+
+31. Leia raamatud, mille hind on suurem 200 , kui eelnevalt suurendati raamatute hinda 1,5 kord.
+
+mysql> select Pealkiri, Hind from RAAMAT where Hind*1.5>200;
++----------------------+------+
+| Pealkiri             | Hind |
++----------------------+------+
+| Tõde ja õigus        |  235 |
+| Käitumise anatoomia  |  395 |
+| Kana ja muna         |  450 |
+| Arabella             |  876 |
+| Ja päike tõuseb      |  327 |
+| 10 aastat hiljem     |  821 |
+| Sõda ja rahu         |  143 |
++----------------------+------+
+7 rows in set (0.00 sec)
+
+32. Leia keskmine autori poolt kokku kirjutatud lehekülgede arv. 
+(st leia iga autori raamatute lehekülgede arv kokku ja seejärel nende keskmine)
+
+mysql> select Autor, avg(Lk_arv) from RAAMAT group by Autor;
++------------------+-------------+
+| Autor            | avg(Lk_arv) |
++------------------+-------------+
+| A.H.Tammsaare    |    459.0000 |
+| A.Kivirähk       |      2.0000 |
+| Aino Perg        |     67.0000 |
+| Aino Pervik      |    187.0000 |
+| Alexander Dumas  |    183.0000 |
+| Astrid Lindgren  |    199.0000 |
+| Dostojevski      |    487.0000 |
+| Ellen Niit       |    150.0000 |
+| Hernst Hemingway |    273.0000 |
+| Isaac Asimov     |    225.5000 |
+| J.F.Cooper       |    398.0000 |
+| J.K.Ibin         |    175.0000 |
+| J.Stalin         |    322.0000 |
+| Juhan Liiv       |    287.0000 |
+| Jules Verne      |    682.0000 |
+| Jüri Tuulik      |    253.0000 |
+| Kait Marandi     |      2.0000 |
+| Lev Tolstoi      |    645.0000 |
+| M.Kivistik       |    287.0000 |
+| Mary Shelly      |    189.0000 |
+| Nikolai Kogol    |    298.0000 |
+| Oskar Luts       |    152.2000 |
+| Rein Hanson      |      7.0000 |
+| Rex Stout        |    187.0000 |
+| Sigmund Freud    |      5.0000 |
+| Silvia Rannamaa  |    145.0000 |
+| T.Trubetski      |    145.0000 |
+| Tove Janson      |      4.0000 |
+| U.K.LeQuine      |    198.0000 |
+| V.I.Lenin        |    176.0000 |
+| V.Läcis          |    306.3333 |
++------------------+-------------+
+31 rows in set (0.00 sec)
+
+33. Väljasta nende autorite raamatud, kellel on tabelis 2 raamatut.
+
+mysql> select Autor from RAAMAT group by Autor having count(*)=2;
++------------------+
+| Autor            |
++------------------+
+| Hernst Hemingway |
+| Isaac Asimov     |
+| J.Stalin         |
+| T.Trubetski      |
++------------------+
+4 rows in set (0.01 sec)
+
+
+34. Leia lugejad, kes ei ole laenutanud ühtegi raamatut.
+
+mysql> select Eesnimi, Perenimi from LUGEJA where Lugeja_ID not in (select Lugeja_ID from LAENUTAMINE);
++---------+----------+
+| Eesnimi | Perenimi |
++---------+----------+
+| Kadri   | Kade     |
+| Vaiko   | Kook     |
+| Veiko   | Vesi     |
+| Hannes  | Hein     |
+| Leo     | Loots    |
+| Liia    | Lips     |
+| Kalev   | Komm     |
+| Rita    | Rehv     |
+| Janek   | Jooksik  |
+| Jane    | Jänes    |
+| Mart    | Karu     |
+| Kati    | Karu     |
+| Mari    | Mustikas |
+| Magnus  | Moos     |
++---------+----------+
+14 rows in set (0.00 sec)
+
+35. Leia raamatute hindade erinevused keskmisest hinnast (väljasta pealkiri, hind ja hinnaerinevus).
+
+
+mysql> select Pealkiri, Hind, round(Hind - k,2) AS Hinnaerinevus from RAAMAT,(select avg(Hind) AS k from RAAMAT)R;
++-----------------------+------+---------------+
+| Pealkiri              | Hind | Hinnaerinevus |
++-----------------------+------+---------------+
+| Asum                  |   35 |        -87.88 |
+| Ajaseemned            |   38 |        -84.88 |
+| Frankestein           |   29 |        -93.88 |
+| Tõde ja õigus         |  235 |        112.12 |
+| Kevade                |   46 |        -76.88 |
+| Daam sinises          |   25 |        -97.88 |
+| Mina ja George        |   38 |        -84.88 |
+| Käitumise anatoomia   |  395 |        272.12 |
+| Konstitutsioon        |   56 |        -66.88 |
+| Rahvasõbrad           |   23 |        -99.88 |
+| Leninismi alustest    |   65 |        -57.88 |
+| Pimeduse pahem käsi   |   55 |        -67.88 |
+| Mis teha              |   43 |        -79.88 |
+| Surnud hinged         |   55 |        -67.88 |
+| Kalevipoeg            |   60 |        -62.88 |
+| Massi ebajumal        |   75 |        -47.88 |
+| Inimesed maskides     |  130 |          7.12 |
+| Hiline kevad          |   89 |        -33.88 |
+| Testament             |  115 |         -7.88 |
+| Pioneerid             |    1 |       -121.88 |
+| Surma ratsanikud      |    1 |       -121.88 |
+| Kana ja muna          |  450 |        327.12 |
+| Naksitrallid          |   45 |        -77.88 |
+| Arvuti A ja B         |   23 |        -99.88 |
+| Kasuema               |   45 |        -77.88 |
+| Kunksmoor             |   75 |        -47.88 |
+| Arabella              |  876 |        753.12 |
+| Bullerby lapsed       |   26 |        -96.88 |
+| Muumitrollid          |   77 |        -45.88 |
+| Ja päike tõuseb       |  327 |        204.12 |
+| Vanamees ja meri      |   83 |        -39.88 |
+| 10 aastat hiljem      |  821 |        698.12 |
+| Nukitsamees           |   32 |        -90.88 |
+| Soo                   |   45 |        -77.88 |
+| Vari                  |   63 |        -59.88 |
+| Vares                 |   72 |        -50.88 |
+| Kevade                |   33 |        -89.88 |
+| Suvi                  |   79 |        -43.88 |
+| Sõda ja rahu          |  143 |         20.12 |
+| Kuritöö ja karistus   |   52 |        -70.88 |
+| Saladuslik saar       |   62 |        -60.88 |
++-----------------------+------+---------------+
+41 rows in set (0.00 sec)
