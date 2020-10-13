@@ -1,0 +1,297 @@
+1. Käivita oma andmebaasis fail kool.sql
+
+mysql> show tables;
++-------------------------+
+| Tables_in_kristima_kool |
++-------------------------+
+| AINE                    |
+| AINE_OPILANE            |
+| OPETAJA                 |
+| OPILANE                 |
+| OSAKOND                 |
+| O_GRUPP                 |
++-------------------------+
+6 rows in set (0.00 sec)
+
+
+2. Millistes ainetes pole õpilased ühtegi hinnet saanud?
+
+mysql> select A.nimetus, O.hinne from AINE A LEFT JOIN AINE_OPILANE O ON A.a_kood=O.aine_kood where hinne IS NULL;
++-----------------------------------------+-------+
+| nimetus                                 | hinne |
++-----------------------------------------+-------+
+| Kutsealane inglise keel                 | NULL  |
+| Adobe Illustratori kasutamine           | NULL  |
+| Adobe Photoshopi kasutamine             | NULL  |
+| Dekoratiivviimistlus-tehnikad           | NULL  |
+| Dieettoitlustamine                      | NULL  |
+| Dokumendi- ja arhiivihaldus             | NULL  |
+| Dokumendihalduspraktika                 | NULL  |
+| Eelarveline raamatupidamine             | NULL  |
+| Eesti keel                              | NULL  |
+| Eesti maastikud                         | NULL  |
+| Eesti rekreatsioonigeograafia           | NULL  |
+| Eesti turismigeograafia                 | NULL  |
+| Eesti kossteemid                        | NULL  |
+| Eetika alused                           | NULL  |
+| Ehitamise alused                        | NULL  |
+| Ehitamise phialused                     | NULL  |
+| Ehitiste konstruktsioonid               | NULL  |
+| Ehituse alused                          | NULL  |
+| Ehituskonstruktsioonid                  | NULL  |
+| Ehitusmdistamine                        | NULL  |
+| Ehitusmdistamine ja mrkimine            | NULL  |
+| Ehitusrenoveerimise alused              | NULL  |
+| Ehitustriistad ja pinnattlus            | NULL  |
+| e-kaubandus                             | NULL  |
+| Eksam                                   | NULL  |
+| Eksamid, kursusetd                      | NULL  |
+| EL majandus ja tturg                    | NULL  |
+| Elektripetus                            | NULL  |
+| Elektroonika alused                     | NULL  |
+| Elektrotehnika                          | NULL  |
+| Elektrotehnika ja automaatika elemendid | NULL  |
+| Enesearengu kursus                      | NULL  |
+| Enesevljendus                           | NULL  |
+| Eriala toetav eesti keel                | NULL  |
+| Eriala toetav inglise keel              | NULL  |
+| Eriala toetav keh.kasv                  | NULL  |
+| Eriala toetav saksa keel                | NULL  |
+| Eritoitumine                            | NULL  |
+| Esitluse loomine                        | NULL  |
+| Esitlusgraafika ja multimeedia          | NULL  |
+| Esmaabi                                 | NULL  |
+| e-teenused                              | NULL  |
+| Etikett                                 | NULL  |
+| Ettevtlus ja turundus                   | NULL  |
+| Ettevtluse alused                       | NULL  |
+| Ettevttepraktika                        | NULL  |
+| EUCIPi eksamiks valmistumine            | NULL  |
+| Euroopa turismigeograafia               | NULL  |
+| Failihaldus                             | NULL  |
+| Finantsanals                            | NULL  |
+| Finantsraamatupidamine                  | NULL  |
+| Finantsraamatupidamine arvutil          | NULL  |
+| Finantsvahendus                         | NULL  |
+| Fsika                                   | NULL  |
++-----------------------------------------+-------+
+54 rows in set (0.00 sec)
+
+3. Väljasta nende õpilaste ees- ja perenimi, kes on saanud hindeid.
+
+mysql> select O.eesnimi, O.perenimi, A.hinne from OPILANE O RIGHT JOIN AINE_OPILANE A ON O.isikukood=A.o_isikukood;
++---------+----------+-------+
+| eesnimi | perenimi | hinne |
++---------+----------+-------+
+| Mari    | Maasikas | 3     |
+| Joosep  | Jalakas  | 4     |
+| Tiit    | Tikk     | 4     |
+| Ragnar  | Roos     | 5     |
+| Robert  | Rohi     | 5     |
+| Kevin   | Kivi     | 5     |
+| Sille   | Siil     | 5     |
+| Lilli   | Lill     | 5     |
+| Luisa   | Tuul     | 3     |
+| Sandra  | Saar     | 3     |
+| Kadri   | Kade     | 3     |
+| Vaiko   | Kook     | 3     |
+| Veiko   | Vesi     | 5     |
+| Hannes  | Hein     | 5     |
+| Leo     | Loots    | 5     |
+| Liia    | Lips     | 3     |
+| Kalev   | Komm     | 4     |
+| Rita    | Rehv     | 4     |
+| Janek   | Jooksik  | 4     |
+| Jane    | Jnes     | 4     |
+| Mart    | Karu     | 5     |
+| Kati    | Karummm  | 4     |
+| Kalle   | Kohin    | 3     |
+| Tiia    | Tuisk    | 4     |
++---------+----------+-------+
+24 rows in set (0.00 sec)
+
+4. Mitu on selliseid õpilasi?
+
+mysql> select count(A.hinne) as 'Hinnetega õpilased' from OPILANE O RIGHT JOIN AINE_OPILANE A ON O.isikukood=A.o_isikukood;
++---------------------+
+| Hinnetega õpilased  |
++---------------------+
+|                  24 |
++---------------------+
+1 row in set (0.00 sec)
+
+5. Väljasta hinnatud ained, hinded ja õpetajad, kes on ainet hinnanud.
+
+mysql> select N.nimetus, A.hinne, concat(OP.eesnimi,' ',OP.perenimi) AS Nimi FROM AINE_OPILANE A, AINE N, OPETAJA OP WHERE A.aine_kood=N.a_kood and A.opetaja_kood=OP.opetaja_isikuk;
++------------------------------------------------+-------+----------------+
+| nimetus                                        | hinne | Nimi           |
++------------------------------------------------+-------+----------------+
+| Aedvilja ttlemise tehn.                        | 3     | Olga Kask      |
+| Aedvilja ttlemise tehnoloogia                  | 4     | Oliver Kuusk   |
+| Ajalugu                                        | 4     | Pille Katus    |
+| Alternatiivsed kontoritpaketid                 | 5     | Piret Siil     |
+| Andmebaasid                                    | 5     | Piret Karu     |
+| Andmebaaside alused                            | 5     | Priit Rebane   |
+| Andmebaaside projekteerimine                   | 5     | Priit Jnes     |
+| Andmebaaside projekteerimine ja haldus         | 5     | Sirje Koer     |
+| Andmeturbe alused                              | 3     | Sirje Kass     |
+| Andmeturve                                     | 3     | Sirje Rebane   |
+| Andmettlus ja statistika                       | 3     | Sirje Mnd      |
+| Arhiivinduse alused                            | 3     | Tarmo Saar     |
+| Arvutipetus                                    | 5     | Tauno Kuusik   |
+| Asjaajamine                                    | 5     | Terje Tamm     |
+| Asjaajamisse alused                            | 5     | Thea Tammik    |
+| Avalik esinemine                               | 3     | Tiina Lilleaed |
+| Baarit                                         | 4     | Tiit Lilleaed  |
+| Betoonitd                                      | 4     | Tiiu Rohi      |
+| Bioloogia                                      | 4     | Toomas Leht    |
+| Catering                                       | 4     | Triin Oks      |
+| CCNA1-arvutivrkude alused                      | 5     | Tuuliki Kadaks |
+| CCNA2-ruuterite ja marsruutimise alused        | 4     | Urmas Okas     |
+| CCNA3-Kommunikatsiooni alused ja marsruutimine | 3     | Viia Mgi       |
+| CCNA4-Laivrgu tehnoloogiad                     | 4     | Vilve Org      |
++------------------------------------------------+-------+----------------+
+24 rows in set (0.00 sec)
+
+6. Leia keskmine hinne kõikidest hinnetest.
+
+mysql> select AVG(hinne) from AINE_OPILANE;
++-------------------+
+| AVG(hinne)        |
++-------------------+
+| 4.083333333333333 |
++-------------------+
+1 row in set (0.00 sec)
+
+7. Leia iga aine keskmine hinne. Väljasta aine nimetus ja keskmine hinne.
+
+mysql> select A.nimetus, AVG(O.hinne) AS Keskmine_hinne from AINE_OPILANE O, AINE A WHERE O.aine_kood=A.a_kood group by A.nimetus;
++------------------------------------------------+----------------+
+| nimetus                                        | Keskmine_hinne |
++------------------------------------------------+----------------+
+| Aedvilja ttlemise tehn.                        |              3 |
+| Aedvilja ttlemise tehnoloogia                  |              4 |
+| Ajalugu                                        |              4 |
+| Alternatiivsed kontoritpaketid                 |              5 |
+| Andmebaasid                                    |              5 |
+| Andmebaaside alused                            |              5 |
+| Andmebaaside projekteerimine                   |              5 |
+| Andmebaaside projekteerimine ja haldus         |              5 |
+| Andmettlus ja statistika                       |              3 |
+| Andmeturbe alused                              |              3 |
+| Andmeturve                                     |              3 |
+| Arhiivinduse alused                            |              3 |
+| Arvutipetus                                    |              5 |
+| Asjaajamine                                    |              5 |
+| Asjaajamisse alused                            |              5 |
+| Avalik esinemine                               |              3 |
+| Baarit                                         |              4 |
+| Betoonitd                                      |              4 |
+| Bioloogia                                      |              4 |
+| Catering                                       |              4 |
+| CCNA1-arvutivrkude alused                      |              5 |
+| CCNA2-ruuterite ja marsruutimise alused        |              4 |
+| CCNA3-Kommunikatsiooni alused ja marsruutimine |              3 |
+| CCNA4-Laivrgu tehnoloogiad                     |              4 |
++------------------------------------------------+----------------+
+24 rows in set (0.00 sec)
+
+8. Koolis hakatakse hindama 5-pallise skaala asemel 10 pallisel skaalal. 
+Väljasta ained ja uued hinded, kui on teada, et hinded muutuvad järgmiselt (1->2, 2->4, 3->6, 4->8 ja 5->10).
+
+mysql> select aine_kood, hinne from AINE_OPILANE;
++-----------+-------+
+| aine_kood | hinne |
++-----------+-------+
+|         4 | 6     |
+|         5 | 8     |
+|         6 | 8     |
+|         7 | 10    |
+|         8 | 10    |
+|         9 | 10    |
+|        10 | 10    |
+|        11 | 10    |
+|        12 | 6     |
+|        13 | 6     |
+|        14 | 6     |
+|        15 | 6     |
+|        16 | 10    |
+|        17 | 10    |
+|        18 | 10    |
+|        19 | 6     |
+|        20 | 8     |
+|        21 | 8     |
+|        22 | 8     |
+|        23 | 8     |
+|        24 | 10    |
+|        25 | 8     |
+|        26 | 6     |
+|        27 | 8     |
++-----------+-------+
+24 rows in set (0.00 sec)
+
+
+9. Leia, mitu õpilast õpib igas grupis?
+
+ysql> SELECT G.o_gr_nimi, count(O.g_kood) AS Opilaste_arv from O_GRUPP G, OPILANE O where G.o_gr_kood=O.g_kood group by G.o_gr_nimi;
++-----------+--------------+
+| o_gr_nimi | Opilaste_arv |
++-----------+--------------+
+| ARV07     |            5 |
+| HTL05     |            4 |
+| KKK06     |            7 |
+| RMT07     |            6 |
+| TSL05     |            5 |
++-----------+--------------+
+5 rows in set (0.00 sec)
+
+10. Arvuta õpilaste vanused arvestades ka seda, millal on õpilase sünnipäev st, kas see on juba sel aastal toimunud või mitte.
+
+mysql> select eesnimi, perenimi, TIMESTAMPDIFF(YEAR, concat(if(substring(isikukood,1,1)>='5', '20', '19'), substring(isikukood,2,2),'-',substring(isikukood,4,2),'-',substring(isikukood,6,2)),now()) AS Vanus from OPILANE;
++---------+----------+-------+
+| eesnimi | perenimi | Vanus |
++---------+----------+-------+
+| Kalle   | Kohin    |    30 |
+| Tiia    | Tuisk    |    29 |
+| Pille   | Pill     |  NULL | ---> synniaeg = 36.10.1991
+| Kati    | Kask     |    29 |
+| Malle   | Moos     |    31 |
+| Mari    | Maasikas |    31 |
+| Joosep  | Jalakas  |    31 |
+| Tiit    | Tikk     |    32 |
+| Ragnar  | Roos     |    30 |
+| Robert  | Rohi     |    32 |
+| Kevin   | Kivi     |    30 |
+| Sille   | Siil     |    29 |
+| Lilli   | Lill     |    30 |
+| Luisa   | Tuul     |    28 |
+| Sandra  | Saar     |    29 |
+| Kadri   | Kade     |    30 |
+| Vaiko   | Kook     |    31 |
+| Veiko   | Vesi     |    33 |
+| Hannes  | Hein     |    27 |
+| Leo     | Loots    |    31 |
+| Liia    | Lips     |    28 |
+| Kalev   | Komm     |    32 |
+| Rita    | Rehv     |    29 |
+| Janek   | Jooksik  |    30 |
+| Jane    | Jnes     |    30 |
+| Mart    | Karu     |    28 |
+| Kati    | Karummm  |    31 |
++---------+----------+-------+
+27 rows in set, 1 warning (0.00 sec)
+
+
+11. Leia mitu tüdrukut ja mitu poissi õpib igas grupis.
+
+mysql> select G.nimi, sum(if(left(Isikukood,1)=3,1,0)) AS Poisid, sum(if(left(Isikukood,1)=4,1,0)) AS Tydrukud from O_GRUPP G, OPILANE O where G.o_gr_kood=O.g_kood group by G.nimi;
++-----------------+--------+----------+
+| nimi            | Poisid | Tydrukud |
++-----------------+--------+----------+
+| Arvutiteenindus |      4 |        1 |
+| Hotellindus     |      1 |        3 |
+| Kokk            |      2 |        5 |
+| Raamatupidamine |      2 |        4 |
+| Tisler          |      4 |        1 |
++-----------------+--------+----------+
+5 rows in set (0.00 sec)
