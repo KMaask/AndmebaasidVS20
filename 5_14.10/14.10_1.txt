@@ -1,0 +1,539 @@
+1. Ava  failid synnid.xls ja emad.xls.
+2. Loo antud failide andmete põhjal tabelid SYNNID ja EMAD.
+3. Vii failides olevad andmed vastavatesse tabelitesse.
+
+4. Leia lapsed, kelle sünnikaal on suurem 4040 grammist. Väljasta laste nimed ja sünnikaalud.
+
+mysql> select  Synnikaal, L_Nimi from synnid WHERE Synnikaal>4040;
++-----------+---------+
+| Synnikaal | L_Nimi  |
++-----------+---------+
+|      4140 | Rihard  |
+|      4345 | Andres  |
+|      4842 | Ralf    |
+|      4100 | Marelle |
+|      4062 | Marinel |
+|      4080 | Mirell  |
+|      4600 | Marek   |
++-----------+---------+
+7 rows in set (0.00 sec)
+
+5. Leia lapsed, kelle sünnikaal on väiksem võrdne 3800 grammist. Väljasta laste nimed ja sünnikaalud.
+
+mysql> select  Synnikaal, L_Nimi from synnid WHERE Synnikaal<=3800;
++-----------+-----------+
+| Synnikaal | L_Nimi    |
++-----------+-----------+
+|      2385 | Richard   |
+|      3736 | Ralf      |
+|      3538 | Karolin   |
+|      2920 | Liisi     |
+|      2610 | Kaur      |
+|      2462 | Rasmus    |
+|      2473 | Ramona    |
+|      3148 | Otto      |
+|      2652 | Konrad    |
+|      3545 | Karola    |
+|      3740 | Sten      |
+|      3450 | Heike     |
+|      3290 | Aneteliis |
+|      3250 | Kelly     |
+|      3330 | Sander    |
+|      3756 | Marten    |
+|      2710 | Bairon    |
+|      3056 | Inga      |
+|      2818 | Sebastian |
+|      3496 | Jaan      |
+|      2760 | Elis      |
+|      3398 | Heleriin  |
+|      3150 | Melani    |
+|      3460 | Joosep    |
+|      3670 | Kaidro    |
+|      3670 | Rasmus    |
+|      3670 | Jessika   |
+|      3166 | Prank     |
+|      3090 | Lars      |
+|      3640 | Oliver    |
+|      3540 | Kelli     |
+|      3400 | Karina    |
+|      3186 | Lisandra  |
+|      3104 | Tanel     |
+|      3410 | Emil      |
+|      3800 | Merike    |
+|      3778 | Rita      |
++-----------+-----------+
+37 rows in set (0.00 sec)
+
+6. Leia lapsed, kelle sünnikaal on 3330 grammist kuni 4000 grammini. (Too kaks lahendust) Väljasta laste nimed ja sünnikaalud.
+
+
+mysql> select  Synnikaal, L_Nimi from synnid WHERE Synnikaal >3330 AND Synnikaal <4000;
++-----------+-----------+
+| Synnikaal | L_Nimi    |
++-----------+-----------+
+|      3736 | Ralf      |
+|      3538 | Karolin   |
+|      3545 | Karola    |
+|      3740 | Sten      |
+|      3850 | Steven    |
+|      3450 | Heike     |
+|      3756 | Marten    |
+|      3496 | Jaan      |
+|      3398 | Heleriin  |
+|      3460 | Joosep    |
+|      3876 | Sebastian |
+|      3670 | Kaidro    |
+|      3670 | Rasmus    |
+|      3670 | Jessika   |
+|      3640 | Oliver    |
+|      3540 | Kelli     |
+|      3400 | Karina    |
+|      3986 | Maria     |
+|      3910 | Gregori   |
+|      3912 | Merike    |
+|      3410 | Emil      |
+|      3800 | Merike    |
+|      3778 | Rita      |
++-----------+-----------+
+23 rows in set (0.00 sec)
+
+mysql> select  Synnikaal, L_Nimi from synnid WHERE Synnikaal between 3330 AND 4000;
++-----------+-----------+
+| Synnikaal | L_Nimi    |
++-----------+-----------+
+|      3736 | Ralf      |
+|      3538 | Karolin   |
+|      3545 | Karola    |
+|      3740 | Sten      |
+|      3850 | Steven    |
+|      3450 | Heike     |
+|      3330 | Sander    |
+|      3756 | Marten    |
+|      3496 | Jaan      |
+|      3398 | Heleriin  |
+|      3460 | Joosep    |
+|      3876 | Sebastian |
+|      3670 | Kaidro    |
+|      3670 | Rasmus    |
+|      3670 | Jessika   |
+|      3640 | Oliver    |
+|      3540 | Kelli     |
+|      3400 | Karina    |
+|      3986 | Maria     |
+|      3910 | Gregori   |
+|      3912 | Merike    |
+|      3410 | Emil      |
+|      3800 | Merike    |
+|      3778 | Rita      |
++-----------+-----------+
+24 rows in set (0.00 sec)
+
+
+7. Leia lapsed, kelle sünnikaal on väiksem 3000 grammist ja suurem 4000 grammist.
+
+mysql> select  Synnikaal, L_Nimi from synnid WHERE Synnikaal <3000 AND Synnikaal> 4000;
+Empty set (0.00 sec)
+
+8.  Leia lapsed, kelle eesnimi algab sõnaga Meri. Väljasta lapse nimi ja ema nimi.
+
+mysql> select L.L_nimi, E.Ema_nimi FROM synnid L, emad E WHERE L.L_nimi LIKE "Meri%" and L.Ema_id=E.Ema_id;
++---------+----------+
+| L_nimi  | Ema_nimi |
++---------+----------+
+| Meribel | Kiisu    |
+| Merike  | Merka    |
+| Merike  | Viki     |
++---------+----------+
+3 rows in set (0.00 sec)
+
+9. Leia lapsed, kelle nimi lõpeb a-ga. Väljasta lapse nimi, pikkus ja ema nimi.
+
+mysql> select L.L_nimi, L.synnipikkus, E.Ema_nimi from synnid L, emad E WHERE L.L_nimi LIKE "%a" and L.Ema_id=E.Ema_id;
++----------+-------------+-------------+
+| L_nimi   | synnipikkus | Ema_nimi    |
++----------+-------------+-------------+
+| Ramona   |          47 | Patsike     |
+| Karola   |          50 | Margareth   |
+| Lysandra |          51 | Eveke       |
+| Inga     |          48 | Pisikeingel |
+| Jessika  |          53 | Margariita  |
+| Karina   |          51 | Roosi       |
+| Maria    |          51 | Ave         |
+| Lisandra |          49 | Kirke       |
+| Rita     |          52 | Katrin      |
++----------+-------------+-------------+
+9 rows in set (0.00 sec)
+
+10. Leia lapsed, kelle sünnipikkus on suurem 50 sentimeetrist ja ema on vähemalt 26 aastane. Väljasta lapse nimi, pikkus ja ema nimi.
+
+mysql> select S.Synnipikkus, E.Ema_nimi, S.L_nimi FROM synnid S, emad E  WHERE S.Synnipikkus > 50 AND  S.Ema_id=E.Ema_id AND E.Vanus >= 26;
++-------------+------------+-----------+
+| Synnipikkus | Ema_nimi   | L_nimi    |
++-------------+------------+-----------+
+|          51 | Katariina  | Karolin   |
+|          52 | Katriin    | Steven    |
+|          51 | Eveke      | Lysandra  |
+|          51 | Kriste     | Jaan      |
+|          53 | Ade        | Andres    |
+|          52 | Carmen     | Sebastian |
+|          52 | Viivi      | Rasmus    |
+|          52 | Liisa-Lota | Ralf      |
+|          53 | Annika     | Prank     |
+|          51 | Roosi      | Karina    |
+|          51 | Ave        | Maria     |
+|          51 | Marja      | Gregori   |
+|          54 | Tups       | Mirell    |
+|          51 | Lilleke    | Marek     |
+|          52 | Viki       | Merike    |
+|          52 | Katrin     | Rita      |
++-------------+------------+-----------+
+16 rows in set (0.00 sec)
+
+11. Leia lapsed, kes on sündinud Tartus või Tallinnas ja kelle sünnipikkus on vähemalt 50 sentimeetrit. Väljasta lapse nimi pikkus ja elukoht.
+
+mysql> select L_nimi, Synnipikkus, Elukoht from synnid where (Elukoht="Tartu" or Elukoht="Tallinn") and Synnipikkus>=50;
++-----------+-------------+---------+
+| L_nimi    | Synnipikkus | Elukoht |
++-----------+-------------+---------+
+| Ralf      |          50 | Tallinn |
+| Karolin   |          51 | Tallinn |
+| Otto      |          50 | Tallinn |
+| Konrad    |          50 | Tallinn |
+| Sten      |          51 | Tartu   |
+| Steven    |          52 | Tartu   |
+| Heike     |          50 | Tallinn |
+| Kelly     |          50 | Tallinn |
+| Rihard    |          52 | Tallinn |
+| Sander    |          50 | Tallinn |
+| Marten    |          51 | Tallinn |
+| Jaan      |          51 | Tallinn |
+| Heleriin  |          51 | Tartu   |
+| Andres    |          53 | Tallinn |
+| Sebastian |          52 | Tallinn |
+| Kaidro    |          53 | Tallinn |
+| Rasmus    |          52 | Tallinn |
+| Ralf      |          52 | Tallinn |
+| Jessika   |          53 | Tallinn |
+| Prank     |          53 | Tallinn |
+| Lars      |          50 | Tartu   |
+| Oliver    |          50 | Tartu   |
+| Marelle   |          51 | Tallinn |
+| Kelli     |          52 | Tallinn |
+| Karina    |          51 | Tartu   |
+| Maria     |          51 | Tallinn |
+| Marinel   |          51 | Tallinn |
+| Gregori   |          51 | Tallinn |
+| Mirell    |          54 | Tallinn |
+| Merike    |          53 | Tallinn |
+| Emil      |          50 | Tartu   |
+| Marek     |          51 | Tallinn |
+| Rita      |          52 | Tallinn |
++-----------+-------------+---------+
+33 rows in set (0.00 sec)
+
+12. Väljasta lisaks eelnevalt leitud andmetele (punkt 11) ka ema nimi.
+
+mysql> select L_nimi, Synnipikkus, Elukoht, E.Ema_nimi from synnid, emad Ewhere synnid.Ema_id=E.Ema_id and (Elukoht="Tartu" or Elukoht="Tallinn") and Synnipikkus>=50;
++-----------+-------------+---------+------------+
+| L_nimi    | Synnipikkus | Elukoht | Ema_nimi   |
++-----------+-------------+---------+------------+
+| Ralf      |          50 | Tallinn | Rapunzel   |
+| Karolin   |          51 | Tallinn | Katariina  |
+| Otto      |          50 | Tallinn | Lilleke    |
+| Konrad    |          50 | Tallinn | Lilleke    |
+| Sten      |          51 | Tartu   | Kiki       |
+| Steven    |          52 | Tartu   | Katriin    |
+| Heike     |          50 | Tallinn | Zipsik     |
+| Kelly     |          50 | Tallinn | Nadja      |
+| Rihard    |          52 | Tallinn | Moonika    |
+| Sander    |          50 | Tallinn | Plikake    |
+| Marten    |          51 | Tallinn | Kristlin   |
+| Jaan      |          51 | Tallinn | Kriste     |
+| Heleriin  |          51 | Tartu   | Kiisuke    |
+| Andres    |          53 | Tallinn | Ade        |
+| Sebastian |          52 | Tallinn | Carmen     |
+| Kaidro    |          53 | Tallinn | Silja      |
+| Rasmus    |          52 | Tallinn | Viivi      |
+| Ralf      |          52 | Tallinn | Liisa-Lota |
+| Jessika   |          53 | Tallinn | Margariita |
+| Prank     |          53 | Tallinn | Annika     |
+| Lars      |          50 | Tartu   | Piibe      |
+| Oliver    |          50 | Tartu   | Nella      |
+| Marelle   |          51 | Tallinn | Fly        |
+| Kelli     |          52 | Tallinn | Blanka     |
+| Karina    |          51 | Tartu   | Roosi      |
+| Maria     |          51 | Tallinn | Ave        |
+| Marinel   |          51 | Tallinn | Mari       |
+| Gregori   |          51 | Tallinn | Marja      |
+| Mirell    |          54 | Tallinn | Tups       |
+| Merike    |          53 | Tallinn | Merka      |
+| Emil      |          50 | Tartu   | Maiki      |
+| Marek     |          51 | Tallinn | Lilleke    |
+| Rita      |          52 | Tallinn | Katrin     |
++-----------+-------------+---------+------------+
+33 rows in set (0.00 sec)
+
+13. Leia kõik erinevad laste nimed, järjesta nimed a-st z-ni.
+
+mysql> select L_nimi from synnid group by L_nimi order by L_nimi;
++-----------+
+| L_nimi    |
++-----------+
+| Andres    |
+| Aneteliis |
+| Bairon    |
+| Elis      |
+| Emil      |
+| Gregori   |
+| Heike     |
+| Heleriin  |
+| Inga      |
+| Jaan      |
+| Jessika   |
+| Joosep    |
+| Kaidro    |
+| Karina    |
+| Karola    |
+| Karolin   |
+| Kaur      |
+| Kelli     |
+| Kelly     |
+| Konrad    |
+| Lars      |
+| Liisi     |
+| Lisandra  |
+| Lysandra  |
+| Marek     |
+| Marelle   |
+| Maria     |
+| Marinel   |
+| Marten    |
+| Melani    |
+| Meribel   |
+| Merike    |
+| Mirell    |
+| Oliver    |
+| Otto      |
+| Prank     |
+| Ralf      |
+| Ramona    |
+| Rasmus    |
+| Richard   |
+| Rihard    |
+| Rita      |
+| Sander    |
+| Sebastian |
+| Sten      |
+| Steven    |
+| Tanel     |
++-----------+
+47 rows in set (0.00 sec)
+
+14. Leia lapsed, kelle nimi ei alga M-tähega. Väljasta nimed.
+
+mysql> select L_nimi from synnid where L_nimi NOT like "M%" order by L_nimi;
++-----------+
+| L_nimi    |
++-----------+
+| Andres    |
+| Aneteliis |
+| Bairon    |
+| Elis      |
+| Emil      |
+| Gregori   |
+| Heike     |
+| Heleriin  |
+| Inga      |
+| Jaan      |
+| Jessika   |
+| Joosep    |
+| Kaidro    |
+| Karina    |
+| Karola    |
+| Karolin   |
+| Kaur      |
+| Kelli     |
+| Kelly     |
+| Konrad    |
+| Lars      |
+| Liisi     |
+| Lisandra  |
+| Lysandra  |
+| Oliver    |
+| Otto      |
+| Prank     |
+| Ralf      |
+| Ralf      |
+| Ramona    |
+| Rasmus    |
+| Rasmus    |
+| Richard   |
+| Rihard    |
+| Rita      |
+| Sander    |
+| Sebastian |
+| Sebastian |
+| Sten      |
+| Steven    |
+| Tanel     |
++-----------+
+41 rows in set (0.01 sec)
+
+15. Leia lapsed, kelle nimi ei alga E-tähega ja kes ei ela Tartus. Väljasta lapse nimi, ema nimi ja elukoht.
+
+mysql> select L_nimi, Ema_nimi, Elukoht from synnid, emad where synnid.Ema_id=emad.Ema_id and L_nimi not like "E%" and Elukoht!="Tartu";
++-----------+-------------+------------+
+| L_nimi    | Ema_nimi    | Elukoht    |
++-----------+-------------+------------+
+| Richard   | Imbi        | Tallinn    |
+| Ralf      | Rapunzel    | Tallinn    |
+| Karolin   | Katariina   | Tallinn    |
+| Liisi     | Kristall    | Tallinn    |
+| Kaur      | Kurr        | Tallinn    |
+| Rasmus    | Miili       | Keila      |
+| Ramona    | Patsike     | Tallinn    |
+| Otto      | Lilleke     | Tallinn    |
+| Konrad    | Lilleke     | Tallinn    |
+| Karola    | Margareth   | Helsingi   |
+| Heike     | Zipsik      | Tallinn    |
+| Lysandra  | Eveke       | Tyri       |
+| Kelly     | Nadja       | Tallinn    |
+| Rihard    | Moonika     | Tallinn    |
+| Sander    | Plikake     | Tallinn    |
+| Marten    | Kristlin    | Tallinn    |
+| Inga      | Pisikeingel | Tallinn    |
+| Sebastian | Jessika     | Tallinn    |
+| Jaan      | Kriste      | Tallinn    |
+| Andres    | Ade         | Tallinn    |
+| Melani    | Mormela     | Paide      |
+| Joosep    | Krista      | Viljandi   |
+| Sebastian | Carmen      | Tallinn    |
+| Kaidro    | Silja       | Tallinn    |
+| Rasmus    | Viivi       | Tallinn    |
+| Ralf      | Liisa-Lota  | Tallinn    |
+| Jessika   | Margariita  | Tallinn    |
+| Prank     | Annika      | Tallinn    |
+| Marelle   | Fly         | Tallinn    |
+| Kelli     | Blanka      | Tallinn    |
+| Maria     | Ave         | Tallinn    |
+| Marinel   | Mari        | Tallinn    |
+| Lisandra  | Kirke       | Kuressaare |
+| Gregori   | Marja       | Tallinn    |
+| Mirell    | Tups        | Tallinn    |
+| Meribel   | Kiisu       | Paide      |
+| Merike    | Merka       | Tallinn    |
+| Tanel     | Pille       | Tallinn    |
+| Marek     | Lilleke     | Tallinn    |
+| Merike    | Viki        | Paide      |
+| Rita      | Katrin      | Tallinn    |
++-----------+-------------+------------+
+41 rows in set (0.00 sec)
+
+Kasuta järgmiste päringute tegemisel alampäringuid. ** päringute tegemisel ei pea kasutama alampäringuid.
+
+16. Leia kõige pikema lapse nimi, pikkus, sünniaeg ja sünnikaal.
+
+mysql> Select L_nimi, Synnipikkus, Synnikaal, Synniaeg FROM synnid where Synnipikkus=(Select MAX(Synnipikkus) FROM synnid);+--------+-------------+-----------+----------+
+| L_nimi | Synnipikkus | Synnikaal | Synniaeg |
++--------+-------------+-----------+----------+
+| Mirell |          54 |      4080 | 03:05:00 |
++--------+-------------+-----------+----------+
+1 row in set (0.00 sec)
+
+17. Kasuta eelmist päringut. Lisa eelnevalt toodud andmetele ka ema nimi.
+
+mysql> Select L_Nimi, Synnipikkus, Synniaeg, Synnikaal, Ema_nimi FROM synnid INNER JOIN emad ON emad.Ema_id=synnid.Ema_id WHERE Synnipikkus LIKE (SELECT MAX(Synnipikkus) from synnid);
++--------+-------------+----------+-----------+----------+
+| L_Nimi | Synnipikkus | Synniaeg | Synnikaal | Ema_nimi |
++--------+-------------+----------+-----------+----------+
+| Mirell |          54 | 03:05:00 |      4080 | Tups     |
++--------+-------------+----------+-----------+----------+
+1 row in set (0.00 sec)
+
+18. Leia kõige kergema lapse nimi, pikkus,sünniaeg, sünnikaal ja ema nimi.
+
+mysql> select L_nimi, Synnipikkus, Synniaeg, Synnikaal, Ema_nimi from synnid inner join emad on synnid.Ema_id=emad.Ema_id where Synnikaal LIKE (select min(Synnikaal) from s
++---------+-------------+----------+-----------+----------+
+| L_nimi  | Synnipikkus | Synniaeg | Synnikaal | Ema_nimi |
++---------+-------------+----------+-----------+----------+
+| Richard |          46 | 22:59:00 |      2385 | Imbi     |
++---------+-------------+----------+-----------+----------+
+1 row in set (0.00 sec)
+
+19.** Leia emade keskmine vanus.
+
+mysql> SELECT AVG(Vanus) FROM emad;
++------------+
+| AVG(Vanus) |
++------------+
+|    26.0200 |
++------------+
+1 row in set (0.00 sec)
+
+20. Leia keskmisest vanemad emad. Väljasta ema nimi, vanus ja keskmine vanus.
+
+mysql> select Ema_nimi, Vanus from emad where Vanus > (select avg(Vanus) from emad);
++-----------+-------+
+| Ema_nimi  | Vanus |
++-----------+-------+
+| Katariina |    30 |
+| Kristall  |    29 |
+| Kurr      |    28 |
+| Miili     |    28 |
+| Patsike   |    31 |
+| Margareth |    32 |
+| Katriin   |    28 |
+| Zipsik    |    29 |
+| Nadja     |    27 |
+| Jessika   |    27 |
+| Kriste    |    28 |
+| Triinu    |    27 |
+| Ade       |    34 |
+| Carmen    |    30 |
+| Viivi     |    31 |
+| Annika    |    27 |
+| Piibe     |    28 |
+| Nella     |    28 |
+| Roosi     |    29 |
+| Ave       |    29 |
+| Marja     |    32 |
+| Tups      |    30 |
+| Lilleke   |    27 |
+| Viki      |    30 |
+| Katrin    |    29 |
++-----------+-------+
+25 rows in set (0.01 sec)
+
+21. Kasuta eelmist päringut. Väljasta lisaks eelnevatele andmetele ka lapse nimi ja sünniaeg.
+
+mysql> select Ema_nimi, Vanus, L_nimi, Synniaeg  from emad inner join synnid on emad.Ema_id=synnid.Ema_id where Vanus > (select avg(Vanus) from emad);
++-----------+-------+-----------+----------+
+| Ema_nimi  | Vanus | L_nimi    | Synniaeg |
++-----------+-------+-----------+----------+
+| Katariina |    30 | Karolin   | 19:42:00 |
+| Kristall  |    29 | Liisi     | 00:12:00 |
+| Kurr      |    28 | Kaur      | 00:53:00 |
+| Miili     |    28 | Rasmus    | 13:41:00 |
+| Patsike   |    31 | Ramona    | 18:27:00 |
+| Margareth |    32 | Karola    | 18:28:00 |
+| Katriin   |    28 | Steven    | 23:47:00 |
+| Zipsik    |    29 | Heike     | 11:17:00 |
+| Nadja     |    27 | Kelly     | 22:44:00 |
+| Jessika   |    27 | Sebastian | 14:49:00 |
+| Kriste    |    28 | Jaan      | 01:27:00 |
+| Triinu    |    27 | Elis      | 10:54:00 |
+| Ade       |    34 | Andres    | 03:15:00 |
+| Carmen    |    30 | Sebastian | 05:20:00 |
+| Viivi     |    31 | Rasmus    | 04:05:00 |
+| Annika    |    27 | Prank     | 01:13:00 |
+| Piibe     |    28 | Lars      | 07:58:00 |
+| Nella     |    28 | Oliver    | 20:27:00 |
+| Roosi     |    29 | Karina    | 14:55:00 |
+| Ave       |    29 | Maria     | 20:51:00 |
+| Marja     |    32 | Gregori   | 03:22:00 |
+| Tups      |    30 | Mirell    | 03:05:00 |
+| Lilleke   |    27 | Marek     | 04:55:00 |
+| Viki      |    30 | Merike    | 01:43:00 |
+| Katrin    |    29 | Rita      | 01:37:00 |
++-----------+-------+-----------+----------+
+25 rows in set (0.00 sec)
