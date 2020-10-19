@@ -1,0 +1,646 @@
+1. Loo faili synnid_pereseis.xls olevate andmete põhjal (erinevatel töölehtedel) tabelid ABIELU, LAHUTATUD, TEADMATA ja LESK.
+2. Vii Excelis olevad andmed vastavatesse tabelitesse andmebaasi.
+
+3. Leia iga asukoha kohta, kui palju on perekondi, milles on 1 laps.
+
+mysql> select elukoht, ((select sum(1_laps) FROM ABIELUS) + (select sum(1_laps) FROM LAHUTATUD) + (select sum(1_laps) FROM LESK) +  sum(1_laps)) AS"1-Lapsega pered" FROM TEADMATA GROUP BY elukoht;
++-------------------------+-----------------+
+| elukoht                 | 1-Lapsega pered |
++-------------------------+-----------------+
+| 6ru vald                |          150902 |
+| Abja vald               |          150903 |
+| Abja-Paluoja vs linn    |          150902 |
+| Aegviidu vald           |          150903 |
+| Ahja vald               |          150902 |
+| Alaj6e vald             |          150902 |
+| Alatskivi vald          |          150902 |
+| Albu vald               |          150902 |
+| Ambla vald              |          150906 |
+| Anija vald              |          150904 |
+| Antsla vald             |          150903 |
+| Antsla vs linn          |          150903 |
+| Are vald                |          150902 |
+| Aseri vald              |          150919 |
+| Audru vald              |          150948 |
+| Avanduse vald           |          150907 |
+| Avinurme vald           |          150902 |
+| Elva linn               |          150903 |
+| Emmaste vald            |          150903 |
+| H22demeeste vald        |          150906 |
+| Haabersti linnaosa      |          151348 |
+| Haanja vald             |          150903 |
+| Haapsalu linn           |          150903 |
+| Haaslava vald           |          150902 |
+| Halinga vald            |          150903 |
+| Haljala vald            |          150902 |
+| Halliste vald           |          150903 |
+| Hanila vald             |          150902 |
+| Harku vald              |          150904 |
+| Helme vald              |          150902 |
+| Hiiu maakonna alevikud  |          150902 |
+| Hiiu maakonna kylad     |          150903 |
+| Hummuli vald            |          150903 |
+| Iisaku vald             |          150904 |
+| Illuka vald             |          150902 |
+| Imavere vald            |          150907 |
+| J2rva-Jaani vald        |          150903 |
+| J2rvakandi vald         |          150903 |
+| J6el2htme vald          |          150902 |
+| J6geva linn             |          150904 |
+| J6geva vald             |          150906 |
+| J6hvi linn              |          150903 |
+| J6hvi vald              |          150903 |
+| Juuru vald              |          150903 |
+| K2ina vald              |          150902 |
+| K2rdla linn             |          150903 |
+| K2rla vald              |          150903 |
+| K2ru vald               |          150903 |
+| K6lleste vald           |          150902 |
+| K6o vald                |          150902 |
+| K6pu vald               |          150902 |
+| K6rgessaare vald        |          150904 |
+| K6ue vald               |          150905 |
+| Kaarma vald             |          150903 |
+| Kabala vald             |          150903 |
+| Kadrina vald            |          150909 |
+| Kaisma vald             |          150904 |
+| Kaiu vald               |          150903 |
+| Kallaste linn           |          150902 |
+| Kambja vald             |          150902 |
+| Kanepi vald             |          150906 |
+| Kareda vald             |          150902 |
+| Karksi vald             |          150902 |
+| Karksi-Nuia vs linn     |          150911 |
+| Karula vald             |          150902 |
+| Kasep22 vald            |          150903 |
+| Kehra linn              |          150969 |
+| Kehtna vald             |          150907 |
+| Keila linn              |          150904 |
+| Keila vald              |          150906 |
+| Kernu vald              |          150907 |
+| Kesklinna linnaosa      |          150956 |
+| Kihelkonna vald         |          150903 |
+| Kihnu vald              |          150903 |
+| Kiili vald              |          150902 |
+| Kilingi-N6mme linn      |          150902 |
+| Kivi6li linn            |          150903 |
+| Koeru vald              |          150902 |
+| Kohila alev             |          150904 |
+| Kohila alevi vald       |          150904 |
+| Kohila vald             |          150902 |
+| Kohtla vald             |          150902 |
+| Kohtla-J2rve linn       |          150921 |
+| Kohtla-N6mme vald       |          150902 |
+| Koigi vald              |          150902 |
+| Kolga-Jaani vald        |          150902 |
+| Konguta vald            |          150905 |
+| Koonga vald             |          150902 |
+| Kose vald               |          150903 |
+| Kristiine linnaosa      |          150964 |
+| Kullamaa vald           |          150902 |
+| Kunda linn              |          150902 |
+| Kuressaare linn         |          150902 |
+| Kuusalu vald            |          150903 |
+| Laekvere vald           |          150902 |
+| Laeva vald              |          150902 |
+| Laheda vald             |          150902 |
+| Laimjala vald           |          150902 |
+| Lasnam2e linnaosa       |          150921 |
+| Lasva vald              |          150902 |
+| Lavassaare vald         |          150902 |
+| Lehtse vald             |          150902 |
+| Leisi vald              |          150904 |
+| Lihula vald             |          150910 |
+| Lihula vs linn          |          150902 |
+| Lohusuu vald            |          150903 |
+| Loksa linn              |          150915 |
+| Loksa vald              |          150904 |
+| Loodna vald             |          150904 |
+| Luunja vald             |          150952 |
+| Lyganuse vald           |          150903 |
+| Lymanda vald            |          150906 |
+| M2etaguse vald          |          150902 |
+| M2ksa vald              |          150903 |
+| M2rjamaa alev           |          150904 |
+| M2rjamaa vald           |          150902 |
+| M6isakyla linn          |          150904 |
+| M6niste vald            |          150902 |
+| Maardu linn             |          150907 |
+| Maidla vald             |          150903 |
+| Martna vald             |          150904 |
+| Meeksi vald             |          150902 |
+| Merem2e vald            |          150903 |
+| Mikitam2e vald          |          150902 |
+| Misso vald              |          150906 |
+| Mooste vald             |          150902 |
+| Muhu vald               |          150902 |
+| Mustam2e linnaosa       |          151033 |
+| Mustjala vald           |          150902 |
+| Mustvee linn            |          150902 |
+| N6mme linnaosa          |          150984 |
+| N6o vald                |          150903 |
+| N6va vald               |          150902 |
+| Narva linn              |          150904 |
+| Narva-J6esuu linn       |          150943 |
+| Nissi vald              |          150902 |
+| Noarootsi vald          |          150902 |
+| Oisu vald               |          150902 |
+| Olustvere vald          |          150902 |
+| Orava vald              |          150903 |
+| Orissaare vald          |          150906 |
+| Oru vald                |          150903 |
+| Otep22 vald             |          150905 |
+| Otep22 vs linn          |          150902 |
+| P2rnu linn              |          150902 |
+| P2rnu-Jaagupi alev      |          150902 |
+| P2rsti vald             |          150902 |
+| P6drala vald            |          150902 |
+| P6hja-Tallinna linnaosa |          150907 |
+| P6ltsamaa linn          |          150905 |
+| P6ltsamaa vald          |          150902 |
+| P6lva linn              |          150903 |
+| P6lva vald              |          150903 |
+| P8ide vald              |          150902 |
+| Padise vald             |          150903 |
+| Paide linn              |          150902 |
+| Paide vald              |          150902 |
+| Paikuse vald            |          150902 |
+| Paistu vald             |          150902 |
+| Pajusi vald             |          150903 |
+| Pala vald               |          150903 |
+| Palamuse vald           |          150904 |
+| Paldiski linn           |          150922 |
+| Palupera vald           |          150910 |
+| Peipsi22re vald         |          150904 |
+| Pihtla vald             |          150903 |
+| Piirissaare vald        |          150902 |
+| Pirita linnaosa         |          150928 |
+| Puhja vald              |          150903 |
+| Puka vald               |          150902 |
+| Puurmani vald           |          150902 |
+| Pyhalepa vald           |          150903 |
+| Pyssi linn              |          150961 |
+| R2gavere vald           |          150903 |
+| R2pina linn             |          150902 |
+| R2pina vald             |          150902 |
+| R6ngu vald              |          150903 |
+| R6uge vald              |          150902 |
+| Raasiku vald            |          150905 |
+| Rae vald                |          150902 |
+| Raikkyla vald           |          150904 |
+| Rakke vald              |          150902 |
+| Rakvere linn            |          150902 |
+| Rakvere vald            |          150903 |
+| Rannu vald              |          150902 |
+| Rapla linn              |          150902 |
+| Rapla vald              |          150902 |
+| Ridala vald             |          150902 |
+| Risti vald              |          150902 |
+| Roosna-Alliku vald      |          150902 |
+| Ruhnu vald              |          150902 |
+| S6merpalu vald          |          150904 |
+| S6meru vald             |          150903 |
+| Saarde vald             |          150902 |
+| Saare vald              |          150902 |
+| Saarepeedi vald         |          150902 |
+| Saksi vald              |          150902 |
+| Saku vald               |          150903 |
+| Salme vald              |          150902 |
+| Sangaste vald           |          150903 |
+| Saue linn               |          150903 |
+| Saue vald               |          150904 |
+| Sauga vald              |          150902 |
+| Sillam2e linn           |          150905 |
+| Sindi linn              |          150902 |
+| Sonda vald              |          150902 |
+| Surju vald              |          150902 |
+| Suure-Jaani linn        |          150902 |
+| Suure-Jaani vald        |          150902 |
+| T2htvere vald           |          150902 |
+| T6lliste vald           |          150902 |
+| T6rva linn              |          150903 |
+| T6stamaa vald           |          150902 |
+| Tabivere vald           |          150902 |
+| Taebla vald             |          150902 |
+| Taheva vald             |          150903 |
+| Tahkuranna vald         |          150903 |
+| Tali vald               |          150902 |
+| Tamsalu linn            |          150902 |
+| Tamsalu vald            |          150902 |
+| Tapa linn               |          150904 |
+| Tartu linn              |          150902 |
+| Tartu vald              |          150906 |
+| Tarvastu vald           |          150902 |
+| Toila vald              |          150902 |
+| Tootsi alev             |          150902 |
+| Tootsi vald             |          150903 |
+| Torgu vald              |          150903 |
+| Tori vald               |          150903 |
+| Torma vald              |          150903 |
+| Tudulinna vald          |          150902 |
+| Tyri linn               |          150902 |
+| Tyri vald               |          150902 |
+| Urvaste vald            |          150903 |
+| V22tsa vald             |          150902 |
+| V2ike-Maarja vald       |          150904 |
+| V2ndra alev             |          150906 |
+| V2ndra alevi vald       |          150902 |
+| V2ndra vald             |          150902 |
+| V2rska vald             |          150903 |
+| V6hma linn              |          150902 |
+| V6nnu vald              |          150903 |
+| V6ru linn               |          150905 |
+| V6ru vald               |          150904 |
+| Vaivara vald            |          150904 |
+| Valga linn              |          150903 |
+| Valgj2rve vald          |          150902 |
+| Valjala vald            |          150902 |
+| Vara vald               |          150902 |
+| Varbla vald             |          150902 |
+| Varstu vald             |          150902 |
+| Vasalemma vald          |          150905 |
+| Vastem6isa vald         |          150902 |
+| Vastse-Kuuste vald      |          150902 |
+| Vastseliina vald        |          150902 |
+| Veriora vald            |          150903 |
+| Vigala vald             |          150902 |
+| Vihula vald             |          150902 |
+| Viimsi vald             |          150906 |
+| Viiratsi vald           |          150902 |
+| Viljandi linn           |          150903 |
+| Vinni vald              |          150908 |
+| Viru-Nigula vald        |          150902 |
+| Vormsi vald             |          150904 |
+| ylenurme vald           |          150903 |
++-------------------------+-----------------+
+265 rows in set (0.00 sec)
+
+5. Millises asukohas on kõige rohkem 1 lapsega perekondi? (kasuta eelmist päringut)
+
+mysql> select elukoht, ((select sum(1_laps) FROM ABIELUS) + (select sum(1_laps) FROM LAHUTATUD) + (select sum(1_laps) FROM LESK) +  sum(1_laps)) AS "1-Lapsega pered" FROM TEADMATA group by elukoht order by '1-Lapsega pered' limit 1;
++--------------------+-----------------+
+| elukoht            | 1-Lapsega pered |
++--------------------+-----------------+
+| Haabersti linnaosa |          151348 |
++--------------------+-----------------+
+1 row in set (0.00 sec)
+
+6. Leia kõik vallad tabelist lesk, milles on 3-lapselisi perekondi üle 100.
+
+mysql> select elukoht, 3_last FROM LESK WHERE 3_last > 100 AND elukoht LIKE "%Vald";
++---------------+--------+
+| elukoht       | 3_last |
++---------------+--------+
+| Aseri vald    |    173 |
+| Pala vald     |    103 |
+| Lihula vald   |    158 |
+| Avanduse vald |    211 |
+| Audru vald    |    451 |
+| Lymanda vald  |    170 |
+| Luunja vald   |    853 |
+| Palupera vald |    182 |
+| Misso vald    |    175 |
++---------------+--------+
+9 rows in set (0.00 sec)
+
+7. Leia, kui palju on linnades kokku 2 lapsega perekondi.
+
+mysql> select elukoht, ((select sum(2_last) FROM ABIELUS) + (select sum(2_last) FROM LAHUTATUD) + (select sum(2_last) FROM LESK) + sum(2_last)) AS "Kokku" FROM TEADMATA WHERE elukoht like "%Linn" group by elukoht;
++----------------------+--------+
+| elukoht              | Kokku  |
++----------------------+--------+
+| Abja-Paluoja vs linn | 217627 |
+| Antsla vs linn       | 217627 |
+| Elva linn            | 217627 |
+| Haapsalu linn        | 217627 |
+| J6geva linn          | 217628 |
+| J6hvi linn           | 217627 |
+| K2rdla linn          | 217627 |
+| Kallaste linn        | 217628 |
+| Karksi-Nuia vs linn  | 217644 |
+| Kehra linn           | 217684 |
+| Keila linn           | 217628 |
+| Kilingi-N6mme linn   | 217627 |
+| Kivi6li linn         | 217630 |
+| Kohtla-J2rve linn    | 217637 |
+| Kunda linn           | 217627 |
+| Kuressaare linn      | 217628 |
+| Lihula vs linn       | 217630 |
+| Loksa linn           | 217636 |
+| M6isakyla linn       | 217627 |
+| Maardu linn          | 217630 |
+| Mustvee linn         | 217627 |
+| Narva linn           | 217633 |
+| Narva-J6esuu linn    | 217672 |
+| Otep22 vs linn       | 217629 |
+| P2rnu linn           | 217628 |
+| P6ltsamaa linn       | 217630 |
+| P6lva linn           | 217629 |
+| Paide linn           | 217629 |
+| Paldiski linn        | 217636 |
+| Pyssi linn           | 217656 |
+| R2pina linn          | 217628 |
+| Rakvere linn         | 217627 |
+| Rapla linn           | 217627 |
+| Saue linn            | 217630 |
+| Sillam2e linn        | 217630 |
+| Sindi linn           | 217627 |
+| Suure-Jaani linn     | 217628 |
+| T6rva linn           | 217628 |
+| Tamsalu linn         | 217628 |
+| Tapa linn            | 217631 |
+| Tartu linn           | 217627 |
+| Tyri linn            | 217627 |
+| V6hma linn           | 217627 |
+| V6ru linn            | 217630 |
+| Valga linn           | 217627 |
+| Viljandi linn        | 217628 |
++----------------------+--------+
+46 rows in set (0.00 sec)
+
+8. Leia iga tabeli kohta, kui palju on keskmiselt peresid erinevate laste arvude korral. (nt palju on keskmiselt lasteta peresid jne)
+
+mysql> select round(avg(ei_ole)) AS "0 LAST", round(avg(1_laps)) AS "1 LAPS", round(avg(2_last)) AS "2 LAST", round(avg(3_last)) AS "3 LAST", round(avg(4_last)) AS "4 LAST", round(avg(ei_tea)) AS "INFO PUUDUB" from ABIELUS;
++--------+--------+--------+--------+--------+-------------+
+| 0 LAST | 1 LAPS | 2 LAST | 3 LAST | 4 LAST | INFO PUUDUB |
++--------+--------+--------+--------+--------+-------------+
+|     54 |    260 |    468 |    144 |     33 |          12 |
++--------+--------+--------+--------+--------+-------------+
+1 row in set (0.01 sec)
+
+mysql> select round(avg(ei_ole)) AS "0 LAST", round(avg(1_laps)) AS "1 LAPS", round(avg(2_last)) AS "2 LAST", round(avg(3_last)) AS "3 LAST", round(avg(4_last)) AS "4 LAST", round(avg(ei_tea)) AS "INFO PUUDUB" from LAHUTATUD;
++--------+--------+--------+--------+--------+-------------+
+| 0 LAST | 1 LAPS | 2 LAST | 3 LAST | 4 LAST | INFO PUUDUB |
++--------+--------+--------+--------+--------+-------------+
+|     29 |    168 |    156 |     40 |     10 |           5 |
++--------+--------+--------+--------+--------+-------------+
+1 row in set (0.00 sec)
+
+mysql> select round(avg(ei_ole)) AS "0 LAST", round(avg(1_laps)) AS "1 LAPS", round(avg(2_last)) AS "2 LAST", round(avg(3_last)) AS "3 LAST", round(avg(4_last)) AS "4 LAST", round(avg(ei_tea)) AS "INFO PUUDUB" from LESK;
++--------+--------+--------+--------+--------+-------------+
+| 0 LAST | 1 LAPS | 2 LAST | 3 LAST | 4 LAST | INFO PUUDUB |
++--------+--------+--------+--------+--------+-------------+
+|     41 |    142 |    197 |     71 |     25 |           7 |
++--------+--------+--------+--------+--------+-------------+
+1 row in set (0.01 sec)
+
+mysql> select round(avg(ei_ole)) AS "0 LAST", round(avg(1_laps)) AS "1 LAPS", round(avg(2_last)) AS "2 LAST", round(avg(3_last)) AS "3 LAST", round(avg(4_last)) AS "4 LAST", round(avg(ei_tea)) AS "INFO PUUDUB" from TEADMATA;
++--------+--------+--------+--------+--------+-------------+
+| 0 LAST | 1 LAPS | 2 LAST | 3 LAST | 4 LAST | INFO PUUDUB |
++--------+--------+--------+--------+--------+-------------+
+|      7 |      5 |      4 |      1 |      0 |          26 |
++--------+--------+--------+--------+--------+-------------+
+1 row in set (0.01 sec)
+
+9. Leia kui palju on valdades lapsi. (Väljasta valla nimi ja laste arv)
+
+mysql> select elukoht, ((select sum(1_laps) from ABIELUS) + (select sum(2_last) from ABIELUS) + (select sum(3_last) from ABIELUS) + (select sum(4_last) from ABIELUS) + (select sum(1_laps) from TEADMATA) + (select sum(2_last) from TEADMATA) + (select sum(3_last) from TEADMATA) + (select sum(4_last) from TEADMATA) + (select sum(1_laps) from LESK) + (select sum(2_last) from LESK) + (select sum(3_last) from LESK)+ (select sum(4_last) from LESK) + sum(1_laps) + sum(2_last) + sum(3_last) + sum(4_last)) AS Laste_arv FROM LAHUTATUD WHERE elukoht LIKE "%vald" group by elukoht;
++--------------------+-----------+
+| elukoht            | Laste_arv |
++--------------------+-----------+
+| 6ru vald           |    357912 |
+| Abja vald          |    357949 |
+| Aegviidu vald      |    358099 |
+| Ahja vald          |    358041 |
+| Alaj6e vald        |    357988 |
+| Alatskivi vald     |    357920 |
+| Albu vald          |    357962 |
+| Ambla vald         |    358413 |
+| Anija vald         |    357925 |
+| Antsla vald        |    357916 |
+| Are vald           |    357965 |
+| Aseri vald         |    359102 |
+| Audru vald         |    360741 |
+| Avanduse vald      |    358920 |
+| Avinurme vald      |    357900 |
+| Emmaste vald       |    358192 |
+| H22demeeste vald   |    358074 |
+| Haanja vald        |    358023 |
+| Haaslava vald      |    357891 |
+| Halinga vald       |    358105 |
+| Haljala vald       |    358003 |
+| Halliste vald      |    357911 |
+| Hanila vald        |    357984 |
+| Harku vald         |    357925 |
+| Helme vald         |    357992 |
+| Hummuli vald       |    357963 |
+| Iisaku vald        |    358029 |
+| Illuka vald        |    357933 |
+| Imavere vald       |    358207 |
+| J2rva-Jaani vald   |    357927 |
+| J2rvakandi vald    |    357988 |
+| J6el2htme vald     |    357997 |
+| J6geva vald        |    358295 |
+| J6hvi vald         |    357933 |
+| Juuru vald         |    357967 |
+| K2ina vald         |    357908 |
+| K2rla vald         |    357947 |
+| K2ru vald          |    357938 |
+| K6lleste vald      |    357995 |
+| K6o vald           |    357993 |
+| K6pu vald          |    357938 |
+| K6rgessaare vald   |    358016 |
+| K6ue vald          |    358131 |
+| Kaarma vald        |    358018 |
+| Kabala vald        |    357988 |
+| Kadrina vald       |    358301 |
+| Kaisma vald        |    358007 |
+| Kaiu vald          |    357988 |
+| Kambja vald        |    357910 |
+| Kanepi vald        |    358199 |
+| Kareda vald        |    357910 |
+| Karksi vald        |    357940 |
+| Karula vald        |    357930 |
+| Kasep22 vald       |    357920 |
+| Kehtna vald        |    358181 |
+| Keila vald         |    358241 |
+| Kernu vald         |    358110 |
+| Kihelkonna vald    |    358018 |
+| Kihnu vald         |    357930 |
+| Kiili vald         |    358122 |
+| Koeru vald         |    357952 |
+| Kohila alevi vald  |    357950 |
+| Kohila vald        |    357935 |
+| Kohtla vald        |    357920 |
+| Kohtla-N6mme vald  |    357971 |
+| Koigi vald         |    357907 |
+| Kolga-Jaani vald   |    357948 |
+| Konguta vald       |    358158 |
+| Koonga vald        |    357991 |
+| Kose vald          |    357952 |
+| Kullamaa vald      |    357922 |
+| Kuusalu vald       |    357953 |
+| Laekvere vald      |    357899 |
+| Laeva vald         |    357925 |
+| Laheda vald        |    357926 |
+| Laimjala vald      |    358029 |
+| Lasva vald         |    357917 |
+| Lavassaare vald    |    357898 |
+| Lehtse vald        |    357909 |
+| Leisi vald         |    357929 |
+| Lihula vald        |    358667 |
+| Lohusuu vald       |    357933 |
+| Loksa vald         |    358056 |
+| Loodna vald        |    358098 |
+| Luunja vald        |    363419 |
+| Lyganuse vald      |    357933 |
+| Lymanda vald       |    358608 |
+| M2etaguse vald     |    357909 |
+| M2ksa vald         |    357951 |
+| M2rjamaa vald      |    357983 |
+| M6niste vald       |    358023 |
+| Maidla vald        |    357933 |
+| Martna vald        |    357935 |
+| Meeksi vald        |    357932 |
+| Merem2e vald       |    358037 |
+| Mikitam2e vald     |    357957 |
+| Misso vald         |    358686 |
+| Mooste vald        |    357915 |
+| Muhu vald          |    358013 |
+| Mustjala vald      |    357916 |
+| N6o vald           |    357978 |
+| N6va vald          |    357926 |
+| Nissi vald         |    357944 |
+| Noarootsi vald     |    357963 |
+| Oisu vald          |    357980 |
+| Olustvere vald     |    357934 |
+| Orava vald         |    357920 |
+| Orissaare vald     |    357936 |
+| Oru vald           |    357916 |
+| Otep22 vald        |    358094 |
+| P2rsti vald        |    357968 |
+| P6drala vald       |    357917 |
+| P6ltsamaa vald     |    357912 |
+| P6lva vald         |    357908 |
+| P8ide vald         |    357932 |
+| Padise vald        |    357944 |
+| Paide vald         |    357916 |
+| Paikuse vald       |    357893 |
+| Paistu vald        |    358033 |
+| Pajusi vald        |    358103 |
+| Pala vald          |    358067 |
+| Palamuse vald      |    357910 |
+| Palupera vald      |    358758 |
+| Peipsi22re vald    |    357920 |
+| Pihtla vald        |    357897 |
+| Piirissaare vald   |    357916 |
+| Puhja vald         |    357972 |
+| Puka vald          |    357961 |
+| Puurmani vald      |    357915 |
+| Pyhalepa vald      |    357922 |
+| R2gavere vald      |    357930 |
+| R2pina vald        |    357919 |
+| R6ngu vald         |    357950 |
+| R6uge vald         |    357939 |
+| Raasiku vald       |    358069 |
+| Rae vald           |    357955 |
+| Raikkyla vald      |    358067 |
+| Rakke vald         |    357998 |
+| Rakvere vald       |    358098 |
+| Rannu vald         |    357899 |
+| Rapla vald         |    357910 |
+| Ridala vald        |    357903 |
+| Risti vald         |    357894 |
+| Roosna-Alliku vald |    357934 |
+| Ruhnu vald         |    357904 |
+| S6merpalu vald     |    357916 |
+| S6meru vald        |    357974 |
+| Saarde vald        |    357926 |
+| Saare vald         |    357967 |
+| Saarepeedi vald    |    357941 |
+| Saksi vald         |    357944 |
+| Saku vald          |    358056 |
+| Salme vald         |    357923 |
+| Sangaste vald      |    357912 |
+| Saue vald          |    358202 |
+| Sauga vald         |    357905 |
+| Sonda vald         |    357930 |
+| Surju vald         |    357905 |
+| Suure-Jaani vald   |    357929 |
+| T2htvere vald      |    357910 |
+| T6lliste vald      |    357959 |
+| T6stamaa vald      |    357904 |
+| Tabivere vald      |    357950 |
+| Taebla vald        |    357900 |
+| Taheva vald        |    358020 |
+| Tahkuranna vald    |    358004 |
+| Tali vald          |    357952 |
+| Tamsalu vald       |    357915 |
+| Tartu vald         |    358012 |
+| Tarvastu vald      |    357907 |
+| Toila vald         |    357896 |
+| Tootsi vald        |    358002 |
+| Torgu vald         |    357892 |
+| Tori vald          |    357948 |
+| Torma vald         |    358037 |
+| Tudulinna vald     |    357928 |
+| Tyri vald          |    357929 |
+| Urvaste vald       |    357928 |
+| V22tsa vald        |    357935 |
+| V2ike-Maarja vald  |    357956 |
+| V2ndra alevi vald  |    357987 |
+| V2ndra vald        |    357949 |
+| V2rska vald        |    357917 |
+| V6nnu vald         |    357996 |
+| V6ru vald          |    357897 |
+| Vaivara vald       |    357933 |
+| Valgj2rve vald     |    357899 |
+| Valjala vald       |    357933 |
+| Vara vald          |    357883 |
+| Varbla vald        |    357949 |
+| Varstu vald        |    357913 |
+| Vasalemma vald     |    358179 |
+| Vastem6isa vald    |    357939 |
+| Vastse-Kuuste vald |    358032 |
+| Vastseliina vald   |    357896 |
+| Veriora vald       |    357952 |
+| Vigala vald        |    357920 |
+| Vihula vald        |    357927 |
+| Viimsi vald        |    358189 |
+| Viiratsi vald      |    357931 |
+| Vinni vald         |    358033 |
+| Viru-Nigula vald   |    357955 |
+| Vormsi vald        |    358003 |
+| ylenurme vald      |    357947 |
++--------------------+-----------+
+204 rows in set (0.00 sec)
+
+
+10. Leia kõige suurema laste arvuga vald. (Väljasta valla nimi ja laste arv)
+
+mysql> select elukoht, ((select sum(1_laps) from ABIELUS) + (select sum(2_last) from ABIELUS) + (select sum(3_last) from ABIELUS) + (select sum(4_last) from ABIELUS) + (select sum(1_laps) from TEADMATA) + (select sum(2_last) from TEADMATA) + (select sum(3_last) from TEADMATA) + (select sum(4_last) from TEADMATA) + (select sum(1_laps) from LESK) + (select sum(2_last) from LESK) + (select sum(3_last) from LESK)+ (select sum(4_last) from LESK) + sum(1_laps) + sum(2_last) + sum(3_last) + sum(4_last)) AS Laste_arv FROM LAHUTATUD WHERE elukoht LIKE "%vald" group by elukoht order by Laste_arv desc limit 1;
++-------------+-----------+
+| elukoht     | Laste_arv |
++-------------+-----------+
+| Luunja vald |    363419 |
++-------------+-----------+
+1 row in set (0.00 sec)
+
+11. Leia kõige väiksema laste arvuga vald. (väljasta valla nimi ja laste arv)
+
+mysql> select elukoht, ((select sum(1_laps) from ABIELUS) + (select sum(2_last) from ABIELUS) + (select sum(3_last) from ABIELUS) + (select sum(4_last) from ABIELUS) + (select sum(1_laps) from TEADMATA) + (select sum(2_last) from TEADMATA) + (select sum(3_last) from TEADMATA) + (select sum(4_last) from TEADMATA) + (select sum(1_laps) from LESK) + (select sum(2_last) from LESK) + (select sum(3_last) from LESK)+ (select sum(4_last) from LESK) + sum(1_laps) + sum(2_last) + sum(3_last) + sum(4_last)) AS Laste_arv FROM LAHUTATUD WHERE elukoht LIKE "%vald" group by elukoht order by Laste_arv asc limit 1;
++-----------+-----------+
+| elukoht   | Laste_arv |
++-----------+-----------+
+| Vara vald |    357883 |
++-----------+-----------+
+1 row in set (0.01 sec)
+ 
+12. Siia kirjuta ise üks päring, kus kasutatakse funktsioone.
+mysql> select elukoht, (select max(1_laps + 2_last + 3_last + 4_last) from ABIELUS) AS Suurim FROM ABIELUS Group by Suurim;
++--------------------+--------+
+| elukoht            | Suurim |
++--------------------+--------+
+| Haabersti linnaosa |  21474 |
++--------------------+--------+
+1 row in set (0.00 sec)
+
+13. Siia kirjuta ise üks päring, kus kasutatakse alampäringut.
+
+mysql> select elukoht, 1_laps from LESK where 1_laps=(select min(1_laps) from LESK) group by elukoht;
++------------+--------+
+| elukoht    | 1_laps |
++------------+--------+
+| Tartu linn |      0 |
++------------+--------+
+1 row in set (0.00 sec)
