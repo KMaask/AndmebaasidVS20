@@ -1,0 +1,136 @@
+
+Loo tabel või kasuta juba olemasolevat tabelit
+
+mysql> create table CUSTOMERS_VIEW (ID int not null auto_increment primary key, NAME varchar(50), AGE int(2), ADDRESS varchar(50), SALARY int(7));
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> insert into CUSTOMERS(NAME, AGE, ADDRESS, SALARY) VALUES ('Ramesh', 32, 'Ahmedabad', 2000.00), ('Khilan', 25, 'Delhi', 1500.00), ('kaushik', 23, 'Kota', 2000.00), ('Chaitali', 25, 'Mumbai', 6500.00), ('Hardik', 27, 'Bhopal', 8500.00), ('Komal', 22, 'MP', 4500.00), ('Muffy', 24, 'Indore', 10000.00);
+Query OK, 7 rows affected (0.00 sec)
+Records: 7  Duplicates: 0  Warnings: 0
+
+Katseta ja kirjelda mida teevad järgnevad käsud + lisa saadud väljundid:
+
+1) mysql> CREATE VIEW CUSTOMERS_VIEW AS SELECT NAME, AGE FROM CUSTOMERS;
+Query OK, 0 rows affected (0.01 sec)
+
+2) SELECT * FROM CUSTOMERS_VIEW;
+
+mysql> SELECT * FROM CUSTOMERS_VIEW;
++----------+------+
+| NAME     | AGE  |
++----------+------+
+| Ramesh   |   32 |
+| Khilan   |   25 |
+| kaushik  |   23 |
+| Chaitali |   25 |
+| Hardik   |   27 |
+| Komal    |   22 |
+| Muffy    |   24 |
++----------+------+
+7 rows in set (0.00 sec)
+
+3) UPDATE CUSTOMERS_VIEW SET AGE = 35 WHERE NAME = 'Ramesh';
+
+mysql> UPDATE CUSTOMERS_VIEW SET AGE = 35 WHERE NAME = 'Ramesh';
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+4) DELETE FROM CUSTOMERS_VIEW WHERE age = 22;
+
+mysql> DELETE FROM CUSTOMERS_VIEW WHERE age = 22;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> SELECT * FROM CUSTOMERS_VIEW;
++----------+------+
+| NAME     | AGE  |
++----------+------+
+| Ramesh   |   35 |
+| Khilan   |   25 |
+| kaushik  |   23 |
+| Chaitali |   25 |
+| Hardik   |   27 |
+| Muffy    |   24 |
++----------+------+
+6 rows in set (0.00 sec)
+
+5) DROP VIEW CUSTOMERS_VIEW;
+mysql> DROP VIEW CUSTOMERS_VIEW;
+Query OK, 0 rows affected (0.00 sec)
+
+
+mysql> Create table Emp_Details(EmpId int, EmpName nvarchar(200),
+    -> EmpLogin nvarchar(20), EmpPassword nvarchar(20) , EmploymentDate datetime );
+Query OK, 0 rows affected (0.00 sec)
+
+
+mysql> insert into Emp_Details (EmpId,EmpName, EmpLogin, Emppassword, EmploymentDate)
+   values (1,'EmployeeA', 'EmpA', 'EmpAPwd', '2016-01-29'),
+   (2,'EmployeeB', 'EmpB', 'EmpBPwd', '2018-02-06'),
+   (3,'EmployeeC', 'EmpC', 'EmpCPwd', '2014-05-14'),
+   (4,'EmployeeD', 'EmpD', 'Empd', '2018-03-30'),
+   (5,'EmployeeE', 'EmpE', 'EmpEPwd', '2017-06-30'),
+   (6,'EmployeeF', 'EmpF', 'EmpFPwd', '2012-09-12');
+Query OK, 6 rows affected (0.01 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+mysql> Create View Employeeinfo AS Select EmpId, EmpName, EmploymentDate from Emp_Details;
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> select * from View_Employeeinfo;
++-------+-----------+---------------------+
+| EmpId | EmpName   | employmentdate      |
++-------+-----------+---------------------+
+|     1 | EmployeeA | 2016-01-29 00:00:00 |
+|     2 | EmployeeB | 2018-02-06 00:00:00 |
+|     3 | EmployeeC | 2014-05-14 00:00:00 |
+|     4 | EmployeeD | 2018-03-30 00:00:00 |
+|     5 | EmployeeE | 2017-06-30 00:00:00 |
+|     6 | EmployeeF | 2012-09-12 00:00:00 |
++-------+-----------+---------------------+
+6 rows in set (0.00 sec)
+
+Create table EmpProjInfo (EmpId int, Projectname nvarchar(200));
+
+mysql> insert into EmpProjInfo ( EmpId, Projectname)
+    -> values (1, 'OnlineBookA'),
+    -> (2, 'OnlineBookB'),
+    -> (3, 'OnlineBookC'),
+    -> (4, 'OnlineBookD'),
+    -> (5, 'OnlineBookE');
+Query OK, 5 rows affected (0.00 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> Create view Vw_EmployeeProj As Select Emp_Details.EmpId, Emp_Details.EmpName,  EmpProjInfo.Projectname from Emp_Details inner join  EmpProjInfo on Emp_Details.EmpId=EmpProjInfo.EmpId;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Vw_EmployeeProj;
++-------+-----------+-------------+
+| EmpId | EmpName   | Projectname |
++-------+-----------+-------------+
+|     1 | EmployeeA | OnlineBookA |
+|     2 | EmployeeB | OnlineBookB |
+|     3 | EmployeeC | OnlineBookC |
+|     4 | EmployeeD | OnlineBookD |
+|     5 | EmployeeE | OnlineBookE |
++-------+-----------+-------------+
+5 rows in set (0.00 sec)
+
+
+mysql> Alter view Vw_EmployeeProj As
+    ->  Select Emp_Details.EmpId, Emp_Details.EmpName,
+    ->  EmpProjInfo.Projectname from Emp_Details inner join
+    ->  EmpProjInfo on Emp_Details.EmpId=EmpProjInfo.EmpId where Emp_Details.EmpId in (2,3,4);
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Vw_EmployeeProj;
++-------+-----------+-------------+
+| EmpId | EmpName   | Projectname |
++-------+-----------+-------------+
+|     2 | EmployeeB | OnlineBookB |
+|     3 | EmployeeC | OnlineBookC |
+|     4 | EmployeeD | OnlineBookD |
++-------+-----------+-------------+
+3 rows in set (0.00 sec)
+
+
+
