@@ -1,0 +1,178 @@
+1. Loo vaade, milles on ainult tüdrukute sündimise andmed koos emade nimedega.
+mysql> create view Tydrukud as select s.Synnikuupaev, s.L_nimi, s.Elukoht, s.Synniaeg, s.Synnikaal, s.Synnipikkus, s.Sugu,
+e.Ema_nimi from synnid s inner join emad e on s.Ema_id=e.Ema_id where Sugu like "%t";
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Tydrukud;
++--------------+-----------+------------+----------+-----------+-------------+------+-------------+
+| Synnikuupaev | L_nimi    | Elukoht    | Synniaeg | Synnikaal | Synnipikkus | Sugu | Ema_nimi    |
++--------------+-----------+------------+----------+-----------+-------------+------+-------------+
+| 2007-01-27   | Karolin   | Tallinn    | 19:42:00 |      3538 |          51 | t    | Katariina   |
+| 2007-01-28   | Liisi     | Tallinn    | 00:12:00 |      2920 |          48 | t    | Kristall    |
+| 2007-01-30   | Ramona    | Tallinn    | 18:27:00 |      2473 |          47 | t    | Patsike     |
+| 2007-01-31   | Karola    | Helsingi   | 18:28:00 |      3545 |          50 | t    | Margareth   |
+| 2007-02-04   | Heike     | Tallinn    | 11:17:00 |      3450 |          50 | t    | Zipsik      |
+| 2007-02-05   | Aneteliis | Tartu      | 19:25:00 |      3290 |          49 | t    | Signeke     |
+| 2007-02-06   | Lysandra  | Tyri       | 15:41:00 |      4040 |          51 | t    | Eveke       |
+| 2007-02-07   | Kelly     | Tallinn    | 22:44:00 |      3250 |          50 | t    | Nadja       |
+| 2007-02-10   | Inga      | Tallinn    | 06:18:00 |      3056 |          48 | t    | Pisikeingel |
+| 2007-02-11   | Elis      | Tallinn    | 10:54:00 |      2760 |          47 | t    | Triinu      |
+| 2007-02-11   | Heleriin  | Tartu      | 14:51:00 |      3398 |          51 | t    | Kiisuke     |
+| 2007-02-12   | Melani    | Paide      | 12:50:00 |      3150 |          51 | t    | Mormela     |
+| 2007-02-15   | Jessika   | Tallinn    | 23:15:00 |      3670 |          53 | t    | Margariita  |
+| 2007-02-17   | Marelle   | Tallinn    | 13:36:00 |      4100 |          51 | t    | Fly         |
+| 2007-02-19   | Kelli     | Tallinn    | 19:06:00 |      3540 |          52 | t    | Blanka      |
+| 2007-02-20   | Karina    | Tartu      | 14:55:00 |      3400 |          51 | t    | Roosi       |
+| 2007-02-20   | Maria     | Tallinn    | 20:51:00 |      3986 |          51 | t    | Ave         |
+| 2007-02-20   | Marinel   | Tallinn    | 15:22:00 |      4062 |          51 | t    | Mari        |
+| 2007-02-22   | Lisandra  | Kuressaare | 20:08:00 |      3186 |          49 | t    | Kirke       |
+| 2007-02-26   | Mirell    | Tallinn    | 03:05:00 |      4080 |          54 | t    | Tups        |
+| 2007-02-27   | Meribel   | Paide      | 09:35:00 |      4040 |          53 | t    | Kiisu       |
+| 2007-02-27   | Merike    | Tallinn    | 20:56:00 |      3912 |          53 | t    | Merka       |
+| 2007-03-08   | Merike    | Paide      | 01:43:00 |      3800 |          52 | t    | Viki        |
+| 2007-03-09   | Rita      | Tallinn    | 01:37:00 |      3778 |          52 | t    | Katrin      |
++--------------+-----------+------------+----------+-----------+-------------+------+-------------+
+24 rows in set (0.00 sec)
+
+
+2. Loo samasugune vaade poiste kohta.
+
+mysql> create view Poisid as select s.Synnikuupaev, s.L_nimi, s.Elukoht, s.Synniaeg, s.Synnikaal, s.Synnipikkus, s.Sugu, e.Ema_nimi from synnid s inner join emad e on s.Ema_id=e.Ema_id where Sugu like "%p";
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from Poisid;
++--------------+-----------+----------+----------+-----------+-------------+------+------------+
+| Synnikuupaev | L_nimi    | Elukoht  | Synniaeg | Synnikaal | Synnipikkus | Sugu | Ema_nimi   |
++--------------+-----------+----------+----------+-----------+-------------+------+------------+
+| 2007-01-15   | Richard   | Tallinn  | 22:59:00 |      2385 |          46 | p    | Imbi       |
+| 2007-01-27   | Ralf      | Tallinn  | 13:08:00 |      3736 |          50 | p    | Rapunzel   |
+| 2007-01-28   | Kaur      | Tallinn  | 00:53:00 |      2610 |          46 | p    | Kurr       |
+| 2007-01-28   | Rasmus    | Keila    | 13:41:00 |      2462 |          47 | p    | Miili      |
+| 2007-01-31   | Otto      | Tallinn  | 09:15:00 |      3148 |          50 | p    | Lilleke    |
+| 2007-01-31   | Konrad    | Tallinn  | 09:17:00 |      2652 |          50 | p    | Lilleke    |
+| 2007-02-01   | Sten      | Tartu    | 12:23:00 |      3740 |          51 | p    | Kiki       |
+| 2007-02-03   | Steven    | Tartu    | 23:47:00 |      3850 |          52 | p    | Katriin    |
+| 2007-02-09   | Rihard    | Tallinn  | 02:52:00 |      4140 |          52 | p    | Moonika    |
+| 2007-02-09   | Sander    | Tallinn  | 17:43:00 |      3330 |          50 | p    | Plikake    |
+| 2007-02-10   | Marten    | Tallinn  | 03:28:00 |      3756 |          51 | p    | Kristlin   |
+| 2007-02-10   | Bairon    | Tartu    | 06:05:00 |      2710 |          49 | p    | Zandra     |
+| 2007-02-10   | Sebastian | Tallinn  | 14:49:00 |      2818 |          48 | p    | Jessika    |
+| 2007-02-11   | Jaan      | Tallinn  | 01:27:00 |      3496 |          51 | p    | Kriste     |
+| 2007-02-12   | Andres    | Tallinn  | 03:15:00 |      4345 |          53 | p    | Ade        |
+| 2007-02-12   | Joosep    | Viljandi | 23:42:00 |      3460 |          49 | p    | Krista     |
+| 2007-02-13   | Sebastian | Tallinn  | 05:20:00 |      3876 |          52 | p    | Carmen     |
+| 2007-02-13   | Kaidro    | Tallinn  | 11:33:00 |      3670 |          53 | p    | Silja      |
+| 2007-02-13   | Rasmus    | Tallinn  | 04:05:00 |      3670 |          52 | p    | Viivi      |
+| 2007-02-15   | Ralf      | Tallinn  | 17:21:00 |      4842 |          52 | p    | Liisa-Lota |
+| 2007-02-16   | Prank     | Tallinn  | 01:13:00 |      3166 |          53 | p    | Annika     |
+| 2007-02-16   | Lars      | Tartu    | 07:58:00 |      3090 |          50 | p    | Piibe      |
+| 2007-02-17   | Oliver    | Tartu    | 20:27:00 |      3640 |          50 | p    | Nella      |
+| 2007-02-24   | Gregori   | Tallinn  | 03:22:00 |      3910 |          51 | p    | Marja      |
+| 2007-02-27   | Tanel     | Tallinn  | 23:09:00 |      3104 |          48 | p    | Pille      |
+| 2007-03-02   | Emil      | Tartu    | 00:15:00 |      3410 |          50 | p    | Maiki      |
+| 2007-03-04   | Marek     | Tallinn  | 04:55:00 |      4600 |          51 | p    | Lilleke    |
++--------------+-----------+----------+----------+-----------+-------------+------+------------+
+27 rows in set (0.00 sec)
+
+3. Veendu, et vaadete andmed muutuvad, kui tabelisse sünnid andmeid juurde lisada. Too vastavad näited selle kohta.
+
+mysql> insert into synnid(Synnikuupaev, Ema_Id, L_nimi, Elukoht, Synniaeg, Synnikaal, Synnipikkus, Sugu) values ('2007-03-07', 50, 'Kati', 'Tartu', '04:23', 3889.0, 51, 't');
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from Tydrukud;
++--------------+-----------+------------+----------+-----------+-------------+------+-------------+
+| Synnikuupaev | L_nimi    | Elukoht    | Synniaeg | Synnikaal | Synnipikkus | Sugu | Ema_nimi    |
++--------------+-----------+------------+----------+-----------+-------------+------+-------------+
+| 2007-01-27   | Karolin   | Tallinn    | 19:42:00 |      3538 |          51 | t    | Katariina   |
+| 2007-01-28   | Liisi     | Tallinn    | 00:12:00 |      2920 |          48 | t    | Kristall    |
+| 2007-01-30   | Ramona    | Tallinn    | 18:27:00 |      2473 |          47 | t    | Patsike     |
+| 2007-01-31   | Karola    | Helsingi   | 18:28:00 |      3545 |          50 | t    | Margareth   |
+| 2007-02-04   | Heike     | Tallinn    | 11:17:00 |      3450 |          50 | t    | Zipsik      |
+| 2007-02-05   | Aneteliis | Tartu      | 19:25:00 |      3290 |          49 | t    | Signeke     |
+| 2007-02-06   | Lysandra  | Tyri       | 15:41:00 |      4040 |          51 | t    | Eveke       |
+| 2007-02-07   | Kelly     | Tallinn    | 22:44:00 |      3250 |          50 | t    | Nadja       |
+| 2007-02-10   | Inga      | Tallinn    | 06:18:00 |      3056 |          48 | t    | Pisikeingel |
+| 2007-02-11   | Elis      | Tallinn    | 10:54:00 |      2760 |          47 | t    | Triinu      |
+| 2007-02-11   | Heleriin  | Tartu      | 14:51:00 |      3398 |          51 | t    | Kiisuke     |
+| 2007-02-12   | Melani    | Paide      | 12:50:00 |      3150 |          51 | t    | Mormela     |
+| 2007-02-15   | Jessika   | Tallinn    | 23:15:00 |      3670 |          53 | t    | Margariita  |
+| 2007-02-17   | Marelle   | Tallinn    | 13:36:00 |      4100 |          51 | t    | Fly         |
+| 2007-02-19   | Kelli     | Tallinn    | 19:06:00 |      3540 |          52 | t    | Blanka      |
+| 2007-02-20   | Karina    | Tartu      | 14:55:00 |      3400 |          51 | t    | Roosi       |
+| 2007-02-20   | Maria     | Tallinn    | 20:51:00 |      3986 |          51 | t    | Ave         |
+| 2007-02-20   | Marinel   | Tallinn    | 15:22:00 |      4062 |          51 | t    | Mari        |
+| 2007-02-22   | Lisandra  | Kuressaare | 20:08:00 |      3186 |          49 | t    | Kirke       |
+| 2007-02-26   | Mirell    | Tallinn    | 03:05:00 |      4080 |          54 | t    | Tups        |
+| 2007-02-27   | Meribel   | Paide      | 09:35:00 |      4040 |          53 | t    | Kiisu       |
+| 2007-02-27   | Merike    | Tallinn    | 20:56:00 |      3912 |          53 | t    | Merka       |
+| 2007-03-08   | Merike    | Paide      | 01:43:00 |      3800 |          52 | t    | Viki        |
+| 2007-03-09   | Rita      | Tallinn    | 01:37:00 |      3778 |          52 | t    | Katrin      |
+| 2007-03-07   | Kati      | Tartu      | 04:23:00 |      3889 |          51 | t    | Katrin      |
++--------------+-----------+------------+----------+-----------+-------------+------+-------------+
+25 rows in set (0.00 sec)
+
+4. Uuri, millal on hea kasutada funktsiooni truncate(). Too üks päring selle kasutamise kohta.
+
+The TRUNCATE TABLE command deletes the data inside a table, but not the table itself.
+
+mysql> TRUNCATE TABLE MEMO;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from MEMO;
+Empty set (0.00 sec)
+
+mysql> describe MEMO;
++----------+-------------+------+-----+---------+----------------+
+| Field    | Type        | Null | Key | Default | Extra          |
++----------+-------------+------+-----+---------+----------------+
+| id       | int(11)     | NO   | PRI | NULL    | auto_increment |
+| pealkiri | varchar(50) | YES  |     | NULL    |                |
+| sisu     | text        | YES  |     | NULL    |                |
++----------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+
+5. Loo vaade nimega laenutatud_raamatud, kus on näha laenutamise kuupäev, tähtaeg, raamatu pealkiri ja laenutaja ees- ning perenimi. Vaates näita ainult neid raamatuid, mida ei ole tagastatud.
+
+mysql> CREATE VIEW laenutatud_raamatud AS SELECT LA.Kuupaev, LA.Tahtaeg, R.Pealkiri, LU.Eesnimi, LU.Perenimi, LA.Tagastamine FROM LAENUTAMINE LA,LUGEJA LU, RAAMAT R WHERE LA.Lugeja_ID=LU.Lugeja_ID AND LA.Raamatu_ID=R.Raamatu_ID AND LA.Tagastamine='0000-00-00';
+Query OK, 0 rows affected (0.01 sec)
+
+6. Näita vaates laenutatud_raamatud olevaid andmeid.
+
+mysql> SELECT * FROM laenutatud_raamatud;
++------------+------------+-----------------------+---------+----------+-------------+
+| Kuupaev    | Tahtaeg    | Pealkiri              | Eesnimi | Perenimi | Tagastamine |
++------------+------------+-----------------------+---------+----------+-------------+
+| 2020-08-12 | 2020-09-13 | Pimeduse pahem käsi   | Kalle   | Kohin    | 0000-00-00  |
+| 2020-08-14 | 2020-09-14 | Surnud hinged         | Tiia    | Tuisk    | 0000-00-00  |
+| 2020-08-18 | 2020-09-19 | Kalevipoeg            | Pille   | Pill     | 0000-00-00  |
+| 2020-08-20 | 2020-09-21 | Vanamees ja meri      | Kati    | Kask     | 0000-00-00  |
+| 2020-08-27 | 2020-09-28 | Ja päike tõuseb       | Malle   | Moos     | 0000-00-00  |
+| 2020-08-22 | 2020-09-23 | Kuritöö ja karistus   | Lilli   | Lill     | 0000-00-00  |
+| 2020-08-28 | 2020-09-29 | Arvuti A ja B         | Luisa   | Tuul     | 0000-00-00  |
+| 2020-08-30 | 2020-10-01 | Kasuema               | Siiri   | Lilleke  | 0000-00-00  |
++------------+------------+-----------------------+---------+----------+-------------+
+8 rows in set (0.01 sec)
+
+7. Muuda Laenutamise tabelit lisades sellesse laenutamisi juurde.
+
+mysql> insert into LAENUTAMINE(Kuupaev, Lugeja_ID, Raamatu_ID, Tahtaeg, Tagastamine) values ('2020-08-28', '27', '15', '2020-09-29', '0000-00-00');
+Query OK, 1 row affected (0.00 sec
+
+8. Kontrolli kas muutusid ka vaates olevad andmed?
+
+mysql> SELECT * FROM laenutatud_raamatud;
++------------+------------+-----------------------+---------+----------+-------------+
+| Kuupaev    | Tahtaeg    | Pealkiri              | Eesnimi | Perenimi | Tagastamine |
++------------+------------+-----------------------+---------+----------+-------------+
+| 2020-08-12 | 2020-09-13 | Pimeduse pahem käsi   | Kalle   | Kohin    | 0000-00-00  |
+| 2020-08-14 | 2020-09-14 | Surnud hinged         | Tiia    | Tuisk    | 0000-00-00  |
+| 2020-08-18 | 2020-09-19 | Kalevipoeg            | Pille   | Pill     | 0000-00-00  |
+| 2020-08-20 | 2020-09-21 | Vanamees ja meri      | Kati    | Kask     | 0000-00-00  |
+| 2020-08-27 | 2020-09-28 | Ja päike tõuseb       | Malle   | Moos     | 0000-00-00  |
+| 2020-08-22 | 2020-09-23 | Kuritöö ja karistus   | Lilli   | Lill     | 0000-00-00  |
+| 2020-08-28 | 2020-09-29 | Arvuti A ja B         | Luisa   | Tuul     | 0000-00-00  |
+| 2020-08-30 | 2020-10-01 | Kasuema               | Siiri   | Lilleke  | 0000-00-00  |
+| 2020-08-28 | 2020-09-29 | Kalevipoeg            | Kati    | Karu     | 0000-00-00  |
++------------+------------+-----------------------+---------+----------+-------------+
+9 rows in set (0.00 sec)
