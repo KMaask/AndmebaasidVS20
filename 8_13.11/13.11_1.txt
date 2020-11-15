@@ -1,0 +1,236 @@
+1. Loo protseduur, mis väljastaks tabelist SYNNID laste nimed ja sünnikaalud.
+
+CREATE PROCEDURE `Laps`() NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER SELECT L_nimi, Synnikaal from synnid;
+mysql> CALL laps;
++-----------+-----------+
+| L_nimi    | Synnikaal |
++-----------+-----------+
+| Richard   |      2385 |
+| Ralf      |      3736 |
+| Karolin   |      3538 |
+| Liisi     |      2920 |
+| Kaur      |      2610 |
+| Rasmus    |      2462 |
+| Ramona    |      2473 |
+| Otto      |      3148 |
+| Konrad    |      2652 |
+| Karola    |      3545 |
+| Sten      |      3740 |
+| Steven    |      3850 |
+| Heike     |      3450 |
+| Aneteliis |      3290 |
+| Lysandra  |      4040 |
+| Kelly     |      3250 |
+| Rihard    |      4140 |
+| Sander    |      3330 |
+| Marten    |      3756 |
+| Bairon    |      2710 |
+| Inga      |      3056 |
+| Sebastian |      2818 |
+| Jaan      |      3496 |
+| Elis      |      2760 |
+| Heleriin  |      3398 |
+| Andres    |      4345 |
+| Melani    |      3150 |
+| Joosep    |      3460 |
+| Sebastian |      3876 |
+| Kaidro    |      3670 |
+| Rasmus    |      3670 |
+| Ralf      |      4842 |
+| Jessika   |      3670 |
+| Prank     |      3166 |
+| Lars      |      3090 |
+| Oliver    |      3640 |
+| Marelle   |      4100 |
+| Kelli     |      3540 |
+| Karina    |      3400 |
+| Maria     |      3986 |
+| Marinel   |      4062 |
+| Lisandra  |      3186 |
+| Gregori   |      3910 |
+| Mirell    |      4080 |
+| Meribel   |      4040 |
+| Merike    |      3912 |
+| Tanel     |      3104 |
+| Emil      |      3410 |
+| Marek     |      4600 |
+| Merike    |      3800 |
+| Rita      |      3778 |
+| Kati      |      3889 |
++-----------+-----------+
+52 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+2. Loo protseduur, mille abil saab lisada tabelisse SYNNID lapsi juurde. Protseduuri parameetriteks on ema_id, lapse_nim, synnikuup, elukoht, synniaeg, synnikaal, synnipikkus, sugu.
+
+DROP PROCEDURE `lisa_laps`; CREATE DEFINER=`kristimaaskiktkh`@`localhost` PROCEDURE `lisa_laps`(IN `synnikuup` VARCHAR(20) CHARSET latin1, IN `ema_id` INT, IN `lapse_nim` VARCHAR(20) CHARSET latin1, IN `elukoht` VARCHAR(20) CHARSET latin1, IN `synniaeg` TIME, IN `synnikaal` INT, IN `synnipikkus` INT, IN `sugu` CHAR(1) CHARSET latin1) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER BEGIN INSERT INTO synnid (Synnikuupaev, Ema_id, L_nimi, Elukoht, Synniaeg, Synnikaal, Synnipikkus, Sugu) VALUES (synnikuup, ema_id, lapse_nim, elukoht, synniaeg, synnikaal, synnipikkus, sugu); END
+
+mysql> call lisa_laps('2007-03-12', 7, 'Sandra', 'Viljandi', '05:24:00', 3576, 52, 't');
+Query OK, 1 row affected, 1 warning (0.00 sec)
+
+mysql> select * from synnid;
++-----------+--------------+--------+-----------+------------+----------+-----------+-------------+------+
+| synnid_id | Synnikuupaev | Ema_id | L_nimi    | Elukoht    | Synniaeg | Synnikaal | Synnipikkus | Sugu |
++-----------+--------------+--------+-----------+------------+----------+-----------+-------------+------+
+|         1 | 2007-01-15   |      1 | Richard   | Tallinn    | 22:59:00 |      2385 |          46 | p    |
+|         2 | 2007-01-27   |      2 | Ralf      | Tallinn    | 13:08:00 |      3736 |          50 | p    |
+|         3 | 2007-01-27   |      3 | Karolin   | Tallinn    | 19:42:00 |      3538 |          51 | t    |
+|         4 | 2007-01-28   |      4 | Liisi     | Tallinn    | 00:12:00 |      2920 |          48 | t    |
+|         5 | 2007-01-28   |      5 | Kaur      | Tallinn    | 00:53:00 |      2610 |          46 | p    |
+|         6 | 2007-01-28   |      6 | Rasmus    | Keila      | 13:41:00 |      2462 |          47 | p    |
+|         7 | 2007-01-30   |      7 | Ramona    | Tallinn    | 18:27:00 |      2473 |          47 | t    |
+|         8 | 2007-01-31   |      8 | Otto      | Tallinn    | 09:15:00 |      3148 |          50 | p    |
+|         9 | 2007-01-31   |      8 | Konrad    | Tallinn    | 09:17:00 |      2652 |          50 | p    |
+|        10 | 2007-01-31   |      9 | Karola    | Helsingi   | 18:28:00 |      3545 |          50 | t    |
+|        11 | 2007-02-01   |     10 | Sten      | Tartu      | 12:23:00 |      3740 |          51 | p    |
+|        12 | 2007-02-03   |     11 | Steven    | Tartu      | 23:47:00 |      3850 |          52 | p    |
+|        13 | 2007-02-04   |     12 | Heike     | Tallinn    | 11:17:00 |      3450 |          50 | t    |
+|        14 | 2007-02-05   |     13 | Aneteliis | Tartu      | 19:25:00 |      3290 |          49 | t    |
+|        15 | 2007-02-06   |     14 | Lysandra  | Tyri       | 15:41:00 |      4040 |          51 | t    |
+|        16 | 2007-02-07   |     15 | Kelly     | Tallinn    | 22:44:00 |      3250 |          50 | t    |
+|        17 | 2007-02-09   |     16 | Rihard    | Tallinn    | 02:52:00 |      4140 |          52 | p    |
+|        18 | 2007-02-09   |     17 | Sander    | Tallinn    | 17:43:00 |      3330 |          50 | p    |
+|        19 | 2007-02-10   |     18 | Marten    | Tallinn    | 03:28:00 |      3756 |          51 | p    |
+|        20 | 2007-02-10   |     19 | Bairon    | Tartu      | 06:05:00 |      2710 |          49 | p    |
+|        21 | 2007-02-10   |     20 | Inga      | Tallinn    | 06:18:00 |      3056 |          48 | t    |
+|        22 | 2007-02-10   |     21 | Sebastian | Tallinn    | 14:49:00 |      2818 |          48 | p    |
+|        23 | 2007-02-11   |     22 | Jaan      | Tallinn    | 01:27:00 |      3496 |          51 | p    |
+|        24 | 2007-02-11   |     23 | Elis      | Tallinn    | 10:54:00 |      2760 |          47 | t    |
+|        25 | 2007-02-11   |     24 | Heleriin  | Tartu      | 14:51:00 |      3398 |          51 | t    |
+|        26 | 2007-02-12   |     25 | Andres    | Tallinn    | 03:15:00 |      4345 |          53 | p    |
+|        27 | 2007-02-12   |     26 | Melani    | Paide      | 12:50:00 |      3150 |          51 | t    |
+|        28 | 2007-02-12   |     27 | Joosep    | Viljandi   | 23:42:00 |      3460 |          49 | p    |
+|        29 | 2007-02-13   |     28 | Sebastian | Tallinn    | 05:20:00 |      3876 |          52 | p    |
+|        30 | 2007-02-13   |     29 | Kaidro    | Tallinn    | 11:33:00 |      3670 |          53 | p    |
+|        31 | 2007-02-13   |     30 | Rasmus    | Tallinn    | 04:05:00 |      3670 |          52 | p    |
+|        32 | 2007-02-15   |     31 | Ralf      | Tallinn    | 17:21:00 |      4842 |          52 | p    |
+|        33 | 2007-02-15   |     32 | Jessika   | Tallinn    | 23:15:00 |      3670 |          53 | t    |
+|        34 | 2007-02-16   |     33 | Prank     | Tallinn    | 01:13:00 |      3166 |          53 | p    |
+|        35 | 2007-02-16   |     34 | Lars      | Tartu      | 07:58:00 |      3090 |          50 | p    |
+|        36 | 2007-02-17   |     35 | Oliver    | Tartu      | 20:27:00 |      3640 |          50 | p    |
+|        37 | 2007-02-17   |     36 | Marelle   | Tallinn    | 13:36:00 |      4100 |          51 | t    |
+|        38 | 2007-02-19   |     37 | Kelli     | Tallinn    | 19:06:00 |      3540 |          52 | t    |
+|        39 | 2007-02-20   |     38 | Karina    | Tartu      | 14:55:00 |      3400 |          51 | t    |
+|        40 | 2007-02-20   |     39 | Maria     | Tallinn    | 20:51:00 |      3986 |          51 | t    |
+|        41 | 2007-02-20   |     40 | Marinel   | Tallinn    | 15:22:00 |      4062 |          51 | t    |
+|        42 | 2007-02-22   |     41 | Lisandra  | Kuressaare | 20:08:00 |      3186 |          49 | t    |
+|        43 | 2007-02-24   |     42 | Gregori   | Tallinn    | 03:22:00 |      3910 |          51 | p    |
+|        44 | 2007-02-26   |     43 | Mirell    | Tallinn    | 03:05:00 |      4080 |          54 | t    |
+|        45 | 2007-02-27   |     44 | Meribel   | Paide      | 09:35:00 |      4040 |          53 | t    |
+|        46 | 2007-02-27   |     45 | Merike    | Tallinn    | 20:56:00 |      3912 |          53 | t    |
+|        47 | 2007-02-27   |     46 | Tanel     | Tallinn    | 23:09:00 |      3104 |          48 | p    |
+|        48 | 2007-03-02   |     47 | Emil      | Tartu      | 00:15:00 |      3410 |          50 | p    |
+|        49 | 2007-03-04   |     48 | Marek     | Tallinn    | 04:55:00 |      4600 |          51 | p    |
+|        50 | 2007-03-08   |     49 | Merike    | Paide      | 01:43:00 |      3800 |          52 | t    |
+|        51 | 2007-03-09   |     50 | Rita      | Tallinn    | 01:37:00 |      3778 |          52 | t    |
+|        52 | 2007-03-07   |     50 | Kati      | Tartu      | 04:23:00 |      3889 |          51 | t    |
+|        54 | 2007-03-12   |      7 | Sandra    | Viljandi   | 05:24:00 |      3576 |          52 | t    |
++-----------+--------------+--------+-----------+------------+----------+-----------+-------------+------+
+53 rows in set (0.00 sec)
+
+
+
+3. Muuda eelnevat protseduuri selliselt, et sisestatakse ema nimi ja kui sellist ema ei leidu tabelis laste_emad siis anna veateade.
+
+DROP PROCEDURE `ema`;
+CREATE DEFINER=`kristimaaskiktkh`@`localhost` PROCEDURE `ema`(IN `E_nimi` VARCHAR(20) CHARSET latin1)
+NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
+BEGIN
+DECLARE number INT;
+SELECT COUNT(*) INTO number FROM emad where Ema_nimi = E_nimi;
+IF number > 0 THEN
+ SELECT CONCAT("Nimi ", E_nimi, " on olemas") AS Nimi;
+ELSE 
+ SELECT "Nime ei ole olemas" AS Nimi;
+END IF; END
+
+mysql> call ema("Liisa");
++--------------------+
+| Nimi               |
++--------------------+
+| Nime ei ole olemas |
++--------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> call ema("Mari");
++---------------------+
+| Nimi                |
++---------------------+
+| Nimi Mari on olemas |
++---------------------+
+1 row in set (0.00 sec)
+
+Query OK, 0 rows affected (0.00 sec)
+
+4. Loo protseduur, mis koostaks ja väljastaks tabeli, kus ühes veerus on ema nimi ja teises laste nimed komadega eraldatult.
+
+CREATE PROCEDURE `Nimed`() NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
+BEGIN
+ SELECT e.Ema_nimi AS Ema, l.L_nimi AS Laps FROM synnid l, emad e where l.Ema_id = e.Ema_id;
+END;
+
+mysql> call Nimed();
++-------------+-----------+
+| Ema         | Laps      |
++-------------+-----------+
+| Imbi        | Richard   |
+| Rapunzel    | Ralf      |
+| Katariina   | Karolin   |
+| Kristall    | Liisi     |
+| Kurr        | Kaur      |
+| Miili       | Rasmus    |
+| Patsike     | Ramona    |
+| Lilleke     | Otto      |
+| Lilleke     | Konrad    |
+| Margareth   | Karola    |
+| Kiki        | Sten      |
+| Katriin     | Steven    |
+| Zipsik      | Heike     |
+| Signeke     | Aneteliis |
+| Eveke       | Lysandra  |
+| Nadja       | Kelly     |
+| Moonika     | Rihard    |
+| Plikake     | Sander    |
+| Kristlin    | Marten    |
+| Zandra      | Bairon    |
+| Pisikeingel | Inga      |
+| Jessika     | Sebastian |
+| Kriste      | Jaan      |
+| Triinu      | Elis      |
+| Kiisuke     | Heleriin  |
+| Ade         | Andres    |
+| Mormela     | Melani    |
+| Krista      | Joosep    |
+| Carmen      | Sebastian |
+| Silja       | Kaidro    |
+| Viivi       | Rasmus    |
+| Liisa-Lota  | Ralf      |
+| Margariita  | Jessika   |
+| Annika      | Prank     |
+| Piibe       | Lars      |
+| Nella       | Oliver    |
+| Fly         | Marelle   |
+| Blanka      | Kelli     |
+| Roosi       | Karina    |
+| Ave         | Maria     |
+| Mari        | Marinel   |
+| Kirke       | Lisandra  |
+| Marja       | Gregori   |
+| Tups        | Mirell    |
+| Kiisu       | Meribel   |
+| Merka       | Merike    |
+| Pille       | Tanel     |
+| Maiki       | Emil      |
+| Lilleke     | Marek     |
+| Viki        | Merike    |
+| Katrin      | Rita      |
+| Katrin      | Kati      |
+| Patsike     | Sandra    |
++-------------+-----------+
+53 rows in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
