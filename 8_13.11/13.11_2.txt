@@ -1,0 +1,205 @@
+1.Loo funktsioon, mis muudab etteantud kaalu grammides kaaluks kilogrammides. (Kasuta tabelit Synnid)
+
+CREATE FUNCTION `kaal`(`Kaal` INT) RETURNS INT(3) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER RETURN Kaal/1000;
+
+mysql> select kaal(Synnikaal) from synnid;
++-----------------+
+| kaal(Synnikaal) |
++-----------------+
+|               2 |
+|               4 |
+|               4 |
+|               3 |
+|               3 |
+|               2 |
+|               2 |
+|               3 |
+|               3 |
+|               4 |
+|               4 |
+|               4 |
+|               3 |
+|               3 |
+|               4 |
+|               3 |
+|               4 |
+|               3 |
+|               4 |
+|               3 |
+|               3 |
+|               3 |
+|               3 |
+|               3 |
+|               3 |
+|               4 |
+|               3 |
+|               3 |
+|               4 |
+|               4 |
+|               4 |
+|               5 |
+|               4 |
+|               3 |
+|               3 |
+|               4 |
+|               4 |
+|               4 |
+|               3 |
+|               4 |
+|               4 |
+|               3 |
+|               4 |
+|               4 |
+|               4 |
+|               4 |
+|               3 |
+|               3 |
+|               5 |
+|               4 |
+|               4 |
+|               4 |
+|               4 |
++-----------------+
+53 rows in set (0.00 sec)
+
+2. Loo funktsioon, mis suurendab etteantud arvu 50 korda. (Arv anna ise funktsioonile ette)
+
+CREATE FUNCTION `korruta`(`arv` INT) RETURNS INT NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER return arv*50;
+
+mysql> select korruta(200);
++--------------+
+| korruta(200) |
++--------------+
+|        10000 |
++--------------+
+1 row in set (0.00 sec)
+
+3. Mõtle ise 2 funktsiooni välja
+
+DROP FUNCTION `leia_vanus`;
+CREATE DEFINER=`kristimaaskiktkh`@`localhost`
+FUNCTION `leia_vanus`(`aeg` DATE) RETURNS INT(11) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
+return 2020 - substring(aeg,1,4);
+
+mysql> select leia_vanus(Synnikuupaev) from synnid;
++--------------------------+
+| leia_vanus(Synnikuupaev) |
++--------------------------+
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
+|                       13 |
++--------------------------+
+53 rows in set (0.00 sec)
+
+DROP FUNCTION `leia_kuu`; CREATE DEFINER=`kristimaaskiktkh`@`localhost` FUNCTION `leia_kuu`(`kuu` VARCHAR(20))
+RETURNS VARCHAR(20) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER return DATE_FORMAT(kuu,'%M %Y')
+
+mysql> select leia_kuu(Synnikuupaev) from synnid;
++------------------------+
+| leia_kuu(Synnikuupaev) |
++------------------------+
+| January 2007           |
+| January 2007           |
+| January 2007           |
+| January 2007           |
+| January 2007           |
+| January 2007           |
+| January 2007           |
+| January 2007           |
+| January 2007           |
+| January 2007           |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| February 2007          |
+| March 2007             |
+| March 2007             |
+| March 2007             |
+| March 2007             |
+| March 2007             |
+| March 2007             |
++------------------------+
+53 rows in set (0.00 sec)
