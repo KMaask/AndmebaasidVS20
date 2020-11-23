@@ -1,0 +1,73 @@
+1. Loo funktsioon, mis etteantud reaalarvu (3 kohta peale koma) ümardab reaalarvuks, 
+millel on 2 kohta peale koma.
+
+DROP FUNCTION `ymarda`; CREATE DEFINER=`kristimaaskiktkh`@`localhost` FUNCTION `ymarda`(`arv` REAL) RETURNS DOUBLE NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
+ RETURN round(arv,2)
+
+mysql> select ymarda(21.235);
++----------------+
+| ymarda(21.235) |
++----------------+
+|          21.24 |
++----------------+
+1 row in set (0.00 sec)
+
+
+2. Muuda eelnevat näidet, et see väljastaks tabelist Töötajad (employee): Linna ja selles elavate töötajate arvu.
+
+DROP FUNCTION `loenda`; CREATE DEFINER=`kristimaaskiktkh`@`localhost` FUNCTION `loenda`(`sisend` VARCHAR(20) CHARSET latin1) RETURNS VARCHAR(40) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
+BEGIN
+ DECLARE arv int(2);
+ SET arv = (select count(*) from Employee where sisend = City);
+RETURN concat(sisend, " ",arv); END
+
+mysql> select loenda("Toronto");
++-------------------+
+| loenda("Toronto") |
++-------------------+
+| Toronto 1         |
++-------------------+
+1 row in set (0.00 sec)
+
+mysql> select loenda("New York");
++--------------------+
+| loenda("New York") |
++--------------------+
+| New York 2         |
++--------------------+
+1 row in set (0.00 sec)
+
+mysql> select loenda("Vancouver");
++---------------------+
+| loenda("Vancouver") |
++---------------------+
+| Vancouver 5         |
++---------------------+
+1 row in set (0.00 sec)
+
+3. Loo funktsion, mis etteantud kuupäeva (nt 2020-11-25) muudab eestipäraseks (nt 25.11.2020). Kasuta MySql kuupäeva funktsiooni date_format oma funktsiooni tegemisel. Tulemuse väljastamiseks kasuta select-päringut.
+CREATE FUNCTION `kuupaev`(`sisend` VARCHAR(20) CHARSET latin1) RETURNS VARCHAR(20) DETERMINISTIC NO SQL SQL SECURITY DEFINER
+ RETURN (SELECT DATE_FORMAT(sisend, "%d" "." "%m" "." "%Y"));
+
+mysql> select kuupaev("2020-11-18");
++-----------------------+
+| kuupaev("2020-11-18") |
++-----------------------+
+| 18.11.2020            |
++-----------------------+
+1 row in set (0.00 sec)
+
+
+4. Loo funktsioon, mis etteantud kuupäeva (nt Synnikuupaev) järgi leiab vanuse. Tulemuse väljastamiseks kasuta select-päringut.
+
+DROP FUNCTION `vanus`; CREATE DEFINER=`kristimaaskiktkh`@`localhost` FUNCTION `vanus`(`sisend` VARCHAR(20) CHARSET latin1) RETURNS INT(11) NOT DETERMINISTIC NO SQL SQL SECURITY DEFINER
+ RETURN (SELECT TIMESTAMPDIFF(YEAR, sisend, CURDATE()))
+
+mysql> select vanus("2000-10-05");
++---------------------+
+| vanus("2000-10-05") |
++---------------------+
+|                  20 |
++---------------------+
+1 row in set (0.00 sec)
+
