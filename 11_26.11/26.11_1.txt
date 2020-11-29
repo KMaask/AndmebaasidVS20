@@ -1,0 +1,52 @@
+1.Lisa autode tabelisse väljad: L_O_kuup (date) – liiklusõnnetuse kuupäev, L_O_osaline (set) – kas auto oli süüdi või mitte (valik: ’kannataja’, ’tekitaja’), K_koef (float) – liikluskindlustuse koefitsient.
+
+mysql> alter table AUTO add L_O_kuup date,add L_O_osaline enum("kannataja","tekitaja"),add K_koef float;
+Query OK, 1 row affected (0.01 sec)
+Records: 1  Duplicates: 0  Warnings: 0
+
+2.Lisa autode tabelisse kõikidele autodele liikluskindlustuse koefitsiendid.
+
+mysql> update AUTO set K_koef = 0.8 where auto_id = 2;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> insert into AUTO (mark, RegNR, aasta, RegPiirk, K_koef)  VALUES ('Ford', '475MDL', 2007, 5, 0.4);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> insert into AUTO (mark, RegNR, aasta, RegPiirk, K_koef)  VALUES ('Mazda', '487HCD', 2011, 3, 1);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from AUTO;
++---------+-------+--------+-------+----------+----------+-------------+--------+
+| auto_id | mark  | RegNR  | aasta | RegPiirk | L_O_kuup | L_O_osaline | K_koef |
++---------+-------+--------+-------+----------+----------+-------------+--------+
+|       2 | KIA   | 345ABC |  2013 |        4 | NULL     | NULL        |    0.8 |
+|       3 | Ford  | 475MDL |  2007 |        5 | NULL     | NULL        |    0.4 |
+|       4 | Mazda | 487HCD |  2011 |        3 | NULL     | NULL        |      1 |
++---------+-------+--------+-------+----------+----------+-------------+--------+
+3 rows in set (0.00 sec)
+
+3.Täiusta tabeli AUTO muutmise (update) trigerit selliselt, et liiklusõnnetuse kuupäeva lisamisel suurendatakse auto kindlustuskoefitsienti 1,5 korda nende autode korral, kes olid õnnetuses süüdi.
+
+DROP TRIGGER IF EXISTS `muuda`;CREATE DEFINER=`kristimaaskiktkh`@`localhost` TRIGGER `muuda` BEFORE UPDATE ON `AUTO` FOR EACH ROW
+BEGIN 
+INSERT LOGI SET toiming = "muuda", auto_id = old.auto_id, aeg = NOW(), mark = old.mark, aasta = old.aasta, RegNR = old.RegNR, RegPiirk = old.RegPiirk;
+IF (new.L_O_Kuup IS NOT NULL AND NEW.L_O_osaline="tekitaja") THEN SET new.K_koef = OLD.K_koef*1.5; END IF; END
+
+4.Lisa mõnele autole AUTODE tabelis liiklusõnnetuse kuupäevad koos õnnetuses osaleja valikuga (kannataja, tekitaja).
+
+mysql> UPDATE AUTO set L_O_kuup=NOW(), L_O_osaline="tekitaja" where Auto_id=2;
+Query OK, 1 row affected, 1 warning (0.01 sec)
+Rows matched: 1  Changed: 1  Warnings: 1
+
+5.Näita trigeri töötamist
+
+mysql> select * from AUTO;
++---------+-------+--------+-------+----------+------------+-------------+--------+
+| auto_id | mark  | RegNR  | aasta | RegPiirk | L_O_kuup   | L_O_osaline | K_koef |
++---------+-------+--------+-------+----------+------------+-------------+--------+
+|       2 | KIA   | 345ABC |  2013 |        4 | 2020-11-29 | tekitaja    |    1.2 |
+|       3 | Ford  | 475MDL |  2007 |        5 | NULL       | NULL        |    0.4 |
+|       4 | Mazda | 487HCD |  2011 |        3 | NULL       | NULL        |      1 |
++---------+-------+--------+-------+----------+------------+-------------+--------+
+3 rows in set (0.00 sec)
